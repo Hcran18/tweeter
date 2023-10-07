@@ -24,15 +24,11 @@ public class GetFollowersCountTask extends BackgroundTask {
      * (This can be any user, not just the currently logged-in user.)
      */
     private User targetUser;
-    /**
-     * Message handler that will receive task results.
-     */
-    private Handler messageHandler;
 
     public GetFollowersCountTask(AuthToken authToken, User targetUser, Handler messageHandler) {
+        super(messageHandler);
         this.authToken = authToken;
         this.targetUser = targetUser;
-        this.messageHandler = messageHandler;
     }
 
     @Override
@@ -51,28 +47,6 @@ public class GetFollowersCountTask extends BackgroundTask {
         Bundle msgBundle = new Bundle();
         msgBundle.putBoolean(SUCCESS_KEY, true);
         msgBundle.putInt(COUNT_KEY, count);
-
-        Message msg = Message.obtain();
-        msg.setData(msgBundle);
-
-        messageHandler.sendMessage(msg);
-    }
-
-    private void sendFailedMessage(String message) {
-        Bundle msgBundle = new Bundle();
-        msgBundle.putBoolean(SUCCESS_KEY, false);
-        msgBundle.putString(MESSAGE_KEY, message);
-
-        Message msg = Message.obtain();
-        msg.setData(msgBundle);
-
-        messageHandler.sendMessage(msg);
-    }
-
-    private void sendExceptionMessage(Exception exception) {
-        Bundle msgBundle = new Bundle();
-        msgBundle.putBoolean(SUCCESS_KEY, false);
-        msgBundle.putSerializable(EXCEPTION_KEY, exception);
 
         Message msg = Message.obtain();
         msg.setData(msgBundle);

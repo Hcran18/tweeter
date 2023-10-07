@@ -39,19 +39,15 @@ public class RegisterTask extends BackgroundTask {
      * The base-64 encoded bytes of the user's profile image.
      */
     private String image;
-    /**
-     * Message handler that will receive task results.
-     */
-    private Handler messageHandler;
 
     public RegisterTask(String firstName, String lastName, String username, String password,
                         String image, Handler messageHandler) {
+        super(messageHandler);
         this.firstName = firstName;
         this.lastName = lastName;
         this.username = username;
         this.password = password;
         this.image = image;
-        this.messageHandler = messageHandler;
     }
 
     @Override
@@ -85,28 +81,6 @@ public class RegisterTask extends BackgroundTask {
         msgBundle.putBoolean(SUCCESS_KEY, true);
         msgBundle.putSerializable(USER_KEY, registeredUser);
         msgBundle.putSerializable(AUTH_TOKEN_KEY, authToken);
-
-        Message msg = Message.obtain();
-        msg.setData(msgBundle);
-
-        messageHandler.sendMessage(msg);
-    }
-
-    private void sendFailedMessage(String message) {
-        Bundle msgBundle = new Bundle();
-        msgBundle.putBoolean(SUCCESS_KEY, false);
-        msgBundle.putString(MESSAGE_KEY, message);
-
-        Message msg = Message.obtain();
-        msg.setData(msgBundle);
-
-        messageHandler.sendMessage(msg);
-    }
-
-    private void sendExceptionMessage(Exception exception) {
-        Bundle msgBundle = new Bundle();
-        msgBundle.putBoolean(SUCCESS_KEY, false);
-        msgBundle.putSerializable(EXCEPTION_KEY, exception);
 
         Message msg = Message.obtain();
         msg.setData(msgBundle);

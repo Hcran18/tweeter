@@ -28,15 +28,11 @@ public class LoginTask extends BackgroundTask {
      * The user's password.
      */
     private String password;
-    /**
-     * Message handler that will receive task results.
-     */
-    private Handler messageHandler;
 
     public LoginTask(String username, String password, Handler messageHandler) {
+        super(messageHandler);
         this.username = username;
         this.password = password;
-        this.messageHandler = messageHandler;
     }
 
     @Override
@@ -70,28 +66,6 @@ public class LoginTask extends BackgroundTask {
         msgBundle.putBoolean(SUCCESS_KEY, true);
         msgBundle.putSerializable(USER_KEY, loggedInUser);
         msgBundle.putSerializable(AUTH_TOKEN_KEY, authToken);
-
-        Message msg = Message.obtain();
-        msg.setData(msgBundle);
-
-        messageHandler.sendMessage(msg);
-    }
-
-    private void sendFailedMessage(String message) {
-        Bundle msgBundle = new Bundle();
-        msgBundle.putBoolean(SUCCESS_KEY, false);
-        msgBundle.putString(MESSAGE_KEY, message);
-
-        Message msg = Message.obtain();
-        msg.setData(msgBundle);
-
-        messageHandler.sendMessage(msg);
-    }
-
-    private void sendExceptionMessage(Exception exception) {
-        Bundle msgBundle = new Bundle();
-        msgBundle.putBoolean(SUCCESS_KEY, false);
-        msgBundle.putSerializable(EXCEPTION_KEY, exception);
 
         Message msg = Message.obtain();
         msg.setData(msgBundle);

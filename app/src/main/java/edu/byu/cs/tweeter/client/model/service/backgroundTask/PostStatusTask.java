@@ -23,15 +23,11 @@ public class PostStatusTask extends BackgroundTask {
      * including the identity of the user sending the status.
      */
     private Status status;
-    /**
-     * Message handler that will receive task results.
-     */
-    private Handler messageHandler;
 
     public PostStatusTask(AuthToken authToken, Status status, Handler messageHandler) {
+        super(messageHandler);
         this.authToken = authToken;
         this.status = status;
-        this.messageHandler = messageHandler;
     }
 
     @Override
@@ -49,28 +45,6 @@ public class PostStatusTask extends BackgroundTask {
     private void sendSuccessMessage() {
         Bundle msgBundle = new Bundle();
         msgBundle.putBoolean(SUCCESS_KEY, true);
-
-        Message msg = Message.obtain();
-        msg.setData(msgBundle);
-
-        messageHandler.sendMessage(msg);
-    }
-
-    private void sendFailedMessage(String message) {
-        Bundle msgBundle = new Bundle();
-        msgBundle.putBoolean(SUCCESS_KEY, false);
-        msgBundle.putString(MESSAGE_KEY, message);
-
-        Message msg = Message.obtain();
-        msg.setData(msgBundle);
-
-        messageHandler.sendMessage(msg);
-    }
-
-    private void sendExceptionMessage(Exception exception) {
-        Bundle msgBundle = new Bundle();
-        msgBundle.putBoolean(SUCCESS_KEY, false);
-        msgBundle.putSerializable(EXCEPTION_KEY, exception);
 
         Message msg = Message.obtain();
         msg.setData(msgBundle);
