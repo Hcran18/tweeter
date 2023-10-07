@@ -31,7 +31,7 @@ public abstract class BackgroundTask implements Runnable {
         try {
             doTask();
 
-            sendSuccessMessage(followers, hasMorePages);
+            sendSuccessMessage();
 
         } catch (Exception ex) {
             Log.e(LOG_TAG, ex.getMessage(), ex);
@@ -41,17 +41,19 @@ public abstract class BackgroundTask implements Runnable {
 
     protected abstract void doTask();
 
-    private void sendSuccessMessage(List<User> followers, boolean hasMorePages) {
+    private void sendSuccessMessage() {
         Bundle msgBundle = new Bundle();
         msgBundle.putBoolean(SUCCESS_KEY, true);
-        msgBundle.putSerializable(FOLLOWERS_KEY, (Serializable) followers);
-        msgBundle.putBoolean(MORE_PAGES_KEY, hasMorePages);
+
+        loadSuccessBundle(msgBundle);
 
         Message msg = Message.obtain();
         msg.setData(msgBundle);
 
         messageHandler.sendMessage(msg);
     }
+
+    protected abstract void loadSuccessBundle(Bundle msgBundle);
 
     private void sendFailedMessage(String message) {
         Bundle msgBundle = new Bundle();

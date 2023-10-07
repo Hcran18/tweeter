@@ -78,4 +78,10 @@ public class GetFollowersTask extends BackgroundTask {
 
         messageHandler.sendMessage(msg);
     }
+
+    @Override
+    protected void loadSuccessBundle(Bundle msgBundle) {
+        msgBundle.putSerializable(FOLLOWERS_KEY, (Serializable) followers);
+        msgBundle.putBoolean(MORE_PAGES_KEY, hasMorePages);
+    }
 }

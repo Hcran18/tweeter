@@ -58,24 +58,17 @@ public class GetFollowingTask extends BackgroundTask {
         boolean hasMorePages = pageOfUsers.getSecond();
     }
 
+    @Override
+    protected void loadSuccessBundle(Bundle msgBundle) {
+        msgBundle.putSerializable(FOLLOWEES_KEY, (Serializable) followees);
+        msgBundle.putBoolean(MORE_PAGES_KEY, hasMorePages);
+    }
+
     private FakeData getFakeData() {
         return FakeData.getInstance();
     }
 
     private Pair<List<User>, Boolean> getFollowees() {
         return getFakeData().getPageOfUsers((User) lastFollowee, limit, targetUser);
-    }
-
-
-    private void sendSuccessMessage(List<User> followees, boolean hasMorePages) {
-        Bundle msgBundle = new Bundle();
-        msgBundle.putBoolean(SUCCESS_KEY, true);
-        msgBundle.putSerializable(FOLLOWEES_KEY, (Serializable) followees);
-        msgBundle.putBoolean(MORE_PAGES_KEY, hasMorePages);
-
-        Message msg = Message.obtain();
-        msg.setData(msgBundle);
-
-        messageHandler.sendMessage(msg);
     }
 }

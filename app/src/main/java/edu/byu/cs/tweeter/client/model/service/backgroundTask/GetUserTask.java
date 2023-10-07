@@ -37,6 +37,11 @@ public class GetUserTask extends BackgroundTask {
         User user = getUser();
     }
 
+    @Override
+    protected void loadSuccessBundle(Bundle msgBundle) {
+        msgBundle.putSerializable(USER_KEY, user);
+    }
+
     private FakeData getFakeData() {
         return FakeData.getInstance();
     }
@@ -44,16 +49,5 @@ public class GetUserTask extends BackgroundTask {
     private User getUser() {
         User user = getFakeData().findUserByAlias(alias);
         return user;
-    }
-
-    private void sendSuccessMessage(User user) {
-        Bundle msgBundle = new Bundle();
-        msgBundle.putBoolean(SUCCESS_KEY, true);
-        msgBundle.putSerializable(USER_KEY, user);
-
-        Message msg = Message.obtain();
-        msg.setData(msgBundle);
-
-        messageHandler.sendMessage(msg);
     }
 }

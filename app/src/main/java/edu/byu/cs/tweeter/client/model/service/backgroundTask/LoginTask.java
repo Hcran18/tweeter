@@ -43,6 +43,12 @@ public class LoginTask extends BackgroundTask {
         AuthToken authToken = loginResult.getSecond();
     }
 
+    @Override
+    protected void loadSuccessBundle(Bundle msgBundle) {
+        msgBundle.putSerializable(USER_KEY, loggedInUser);
+        msgBundle.putSerializable(AUTH_TOKEN_KEY, authToken);
+    }
+
     private FakeData getFakeData() {
         return FakeData.getInstance();
     }
@@ -51,17 +57,5 @@ public class LoginTask extends BackgroundTask {
         User loggedInUser = getFakeData().getFirstUser();
         AuthToken authToken = getFakeData().getAuthToken();
         return new Pair<>(loggedInUser, authToken);
-    }
-
-    private void sendSuccessMessage(User loggedInUser, AuthToken authToken) {
-        Bundle msgBundle = new Bundle();
-        msgBundle.putBoolean(SUCCESS_KEY, true);
-        msgBundle.putSerializable(USER_KEY, loggedInUser);
-        msgBundle.putSerializable(AUTH_TOKEN_KEY, authToken);
-
-        Message msg = Message.obtain();
-        msg.setData(msgBundle);
-
-        messageHandler.sendMessage(msg);
     }
 }

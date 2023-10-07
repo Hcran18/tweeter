@@ -59,6 +59,12 @@ public class GetFeedTask extends BackgroundTask {
         boolean hasMorePages = pageOfStatus.getSecond();
     }
 
+    @Override
+    protected void loadSuccessBundle(Bundle msgBundle) {
+        msgBundle.putSerializable(STATUSES_KEY, (Serializable) statuses);
+        msgBundle.putBoolean(MORE_PAGES_KEY, hasMorePages);
+    }
+
     private FakeData getFakeData() {
         return FakeData.getInstance();
     }
@@ -66,17 +72,5 @@ public class GetFeedTask extends BackgroundTask {
     private Pair<List<Status>, Boolean> getFeed() {
         Pair<List<Status>, Boolean> pageOfStatus = getFakeData().getPageOfStatus(lastStatus, limit);
         return pageOfStatus;
-    }
-
-    private void sendSuccessMessage(List<Status> statuses, boolean hasMorePages) {
-        Bundle msgBundle = new Bundle();
-        msgBundle.putBoolean(SUCCESS_KEY, true);
-        msgBundle.putSerializable(STATUSES_KEY, (Serializable) statuses);
-        msgBundle.putBoolean(MORE_PAGES_KEY, hasMorePages);
-
-        Message msg = Message.obtain();
-        msg.setData(msgBundle);
-
-        messageHandler.sendMessage(msg);
     }
 }

@@ -35,13 +35,8 @@ public class UnfollowTask extends BackgroundTask {
         // TODO: Currently using dummy data will implement later - milestone 4
     }
 
-    private void sendSuccessMessage() {
-        Bundle msgBundle = new Bundle();
-        msgBundle.putBoolean(SUCCESS_KEY, true);
-
-        Message msg = Message.obtain();
-        msg.setData(msgBundle);
-
-        messageHandler.sendMessage(msg);
+    @Override
+    protected void loadSuccessBundle(Bundle msgBundle) {
+        //TODO using dummy data
     }
 }

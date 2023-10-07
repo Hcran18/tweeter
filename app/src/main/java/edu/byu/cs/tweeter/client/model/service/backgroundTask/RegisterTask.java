@@ -58,6 +58,12 @@ public class RegisterTask extends BackgroundTask {
         AuthToken authToken = registerResult.getSecond();
     }
 
+    @Override
+    protected void loadSuccessBundle(Bundle msgBundle) {
+        msgBundle.putSerializable(USER_KEY, registeredUser);
+        msgBundle.putSerializable(AUTH_TOKEN_KEY, authToken);
+    }
+
     private FakeData getFakeData() {
         return FakeData.getInstance();
     }
@@ -66,17 +72,5 @@ public class RegisterTask extends BackgroundTask {
         User registeredUser = getFakeData().getFirstUser();
         AuthToken authToken = getFakeData().getAuthToken();
         return new Pair<>(registeredUser, authToken);
-    }
-
-    private void sendSuccessMessage(User registeredUser, AuthToken authToken) {
-        Bundle msgBundle = new Bundle();
-        msgBundle.putBoolean(SUCCESS_KEY, true);
-        msgBundle.putSerializable(USER_KEY, registeredUser);
-        msgBundle.putSerializable(AUTH_TOKEN_KEY, authToken);
-
-        Message msg = Message.obtain();
-        msg.setData(msgBundle);
-
-        messageHandler.sendMessage(msg);
     }
 }
