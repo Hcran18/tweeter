@@ -39,15 +39,8 @@ public class IsFollowerTask extends BackgroundTask {
     }
 
     @Override
-    public void run() {
-        try {
-
-            sendSuccessMessage(new Random().nextInt() > 0);
-
-        } catch (Exception ex) {
-            Log.e(LOG_TAG, ex.getMessage(), ex);
-            sendExceptionMessage(ex);
-        }
+    protected void doTask() {
+        //sendSuccessMessage(new Random().nextInt() > 0);
     }
 
     private void sendSuccessMessage(boolean isFollower) {

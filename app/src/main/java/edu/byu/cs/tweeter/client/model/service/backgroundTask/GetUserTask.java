@@ -33,16 +33,8 @@ public class GetUserTask extends BackgroundTask {
     }
 
     @Override
-    public void run() {
-        try {
-            User user = getUser();
-
-            sendSuccessMessage(user);
-
-        } catch (Exception ex) {
-            Log.e(LOG_TAG, ex.getMessage(), ex);
-            sendExceptionMessage(ex);
-        }
+    protected void doTask() {
+        User user = getUser();
     }
 
     private FakeData getFakeData() {

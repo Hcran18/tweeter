@@ -52,19 +52,11 @@ public class GetFeedTask extends BackgroundTask {
     }
 
     @Override
-    public void run() {
-        try {
-            Pair<List<Status>, Boolean> pageOfStatus = getFeed();
+    protected void doTask() {
+        Pair<List<Status>, Boolean> pageOfStatus = getFeed();
 
-            List<Status> statuses = pageOfStatus.getFirst();
-            boolean hasMorePages = pageOfStatus.getSecond();
-
-            sendSuccessMessage(statuses, hasMorePages);
-
-        } catch (Exception ex) {
-            Log.e(LOG_TAG, ex.getMessage(), ex);
-            sendExceptionMessage(ex);
-        }
+        List<Status> statuses = pageOfStatus.getFirst();
+        boolean hasMorePages = pageOfStatus.getSecond();
     }
 
     private FakeData getFakeData() {

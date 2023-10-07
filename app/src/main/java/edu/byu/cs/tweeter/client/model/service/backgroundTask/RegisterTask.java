@@ -51,19 +51,11 @@ public class RegisterTask extends BackgroundTask {
     }
 
     @Override
-    public void run() {
-        try {
-            Pair<User, AuthToken> registerResult = doRegister();
+    protected void doTask() {
+        Pair<User, AuthToken> registerResult = doRegister();
 
-            User registeredUser = registerResult.getFirst();
-            AuthToken authToken = registerResult.getSecond();
-
-            sendSuccessMessage(registeredUser, authToken);
-
-        } catch (Exception ex) {
-            Log.e(LOG_TAG, ex.getMessage(), ex);
-            sendExceptionMessage(ex);
-        }
+        User registeredUser = registerResult.getFirst();
+        AuthToken authToken = registerResult.getSecond();
     }
 
     private FakeData getFakeData() {

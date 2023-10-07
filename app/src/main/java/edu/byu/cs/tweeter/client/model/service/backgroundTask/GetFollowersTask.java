@@ -50,22 +50,6 @@ public class GetFollowersTask extends BackgroundTask {
         this.lastFollower = lastFollower;
     }
 
-    @Override
-    public void run() {
-        try {
-            Pair<List<User>, Boolean> pageOfUsers = getFollowers();
-
-            List<User> followers = pageOfUsers.getFirst();
-            boolean hasMorePages = pageOfUsers.getSecond();
-
-            sendSuccessMessage(followers, hasMorePages);
-
-        } catch (Exception ex) {
-            Log.e(LOG_TAG, ex.getMessage(), ex);
-            sendExceptionMessage(ex);
-        }
-    }
-
     private FakeData getFakeData() {
         return FakeData.getInstance();
     }
@@ -73,6 +57,14 @@ public class GetFollowersTask extends BackgroundTask {
     private Pair<List<User>, Boolean> getFollowers() {
         Pair<List<User>, Boolean> pageOfUsers = getFakeData().getPageOfUsers(lastFollower, limit, targetUser);
         return pageOfUsers;
+    }
+
+    @Override
+    protected void doTask() {
+        Pair<List<User>, Boolean> pageOfUsers = getFollowers();
+
+        List<User> followers = pageOfUsers.getFirst();
+        boolean hasMorePages = pageOfUsers.getSecond();
     }
 
     private void sendSuccessMessage(List<User> followers, boolean hasMorePages) {

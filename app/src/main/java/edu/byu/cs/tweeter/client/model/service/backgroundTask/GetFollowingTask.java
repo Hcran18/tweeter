@@ -51,19 +51,11 @@ public class GetFollowingTask extends BackgroundTask {
     }
 
     @Override
-    public void run() {
-        try {
-            Pair<List<User>, Boolean> pageOfUsers = getFollowees();
+    protected void doTask() {
+        Pair<List<User>, Boolean> pageOfUsers = getFollowees();
 
-            List<User> followees = pageOfUsers.getFirst();
-            boolean hasMorePages = pageOfUsers.getSecond();
-
-            sendSuccessMessage(followees, hasMorePages);
-
-        } catch (Exception ex) {
-            Log.e(LOG_TAG, "Failed to get followees", ex);
-            sendExceptionMessage(ex);
-        }
+        List<User> followees = pageOfUsers.getFirst();
+        boolean hasMorePages = pageOfUsers.getSecond();
     }
 
     private FakeData getFakeData() {

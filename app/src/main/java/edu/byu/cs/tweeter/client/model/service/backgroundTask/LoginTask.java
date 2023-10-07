@@ -36,19 +36,11 @@ public class LoginTask extends BackgroundTask {
     }
 
     @Override
-    public void run() {
-        try {
-            Pair<User, AuthToken> loginResult = doLogin();
+    protected void doTask() {
+        Pair<User, AuthToken> loginResult = doLogin();
 
-            User loggedInUser = loginResult.getFirst();
-            AuthToken authToken = loginResult.getSecond();
-
-            sendSuccessMessage(loggedInUser, authToken);
-
-        } catch (Exception ex) {
-            Log.e(LOG_TAG, ex.getMessage(), ex);
-            sendExceptionMessage(ex);
-        }
+        User loggedInUser = loginResult.getFirst();
+        AuthToken authToken = loginResult.getSecond();
     }
 
     private FakeData getFakeData() {

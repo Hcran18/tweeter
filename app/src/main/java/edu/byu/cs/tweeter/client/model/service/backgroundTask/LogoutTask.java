@@ -24,15 +24,8 @@ public class LogoutTask extends BackgroundTask {
     }
 
     @Override
-    public void run() {
-        try {
-
-            sendSuccessMessage();
-
-        } catch (Exception ex) {
-            Log.e(LOG_TAG, ex.getMessage(), ex);
-            sendExceptionMessage(ex);
-        }
+    protected void doTask() {
+        // TODO: Currently using dummy data will implement later - milestone 4
     }
 
     private void sendSuccessMessage() {
