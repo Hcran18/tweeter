@@ -11,13 +11,9 @@ import edu.byu.cs.tweeter.model.domain.User;
 /**
  * Background task that queries how many followers a user has.
  */
-public class GetFollowersCountTask implements Runnable {
+public class GetFollowersCountTask extends BackgroundTask {
     private static final String LOG_TAG = "GetFollowersCountTask";
-
-    public static final String SUCCESS_KEY = "success";
     public static final String COUNT_KEY = "count";
-    public static final String MESSAGE_KEY = "message";
-    public static final String EXCEPTION_KEY = "exception";
 
     /**
      * Auth token for logged-in user.

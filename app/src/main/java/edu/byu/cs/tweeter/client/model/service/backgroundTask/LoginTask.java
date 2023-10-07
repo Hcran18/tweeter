@@ -13,15 +13,12 @@ import edu.byu.cs.tweeter.util.Pair;
 /**
  * Background task that logs in a user (i.e., starts a session).
  */
-public class LoginTask implements Runnable {
+public class LoginTask extends BackgroundTask {
 
     private static final String LOG_TAG = "LoginTask";
 
-    public static final String SUCCESS_KEY = "success";
     public static final String USER_KEY = "user";
     public static final String AUTH_TOKEN_KEY = "auth-token";
-    public static final String MESSAGE_KEY = "message";
-    public static final String EXCEPTION_KEY = "exception";
 
     /**
      * The user's username (or "alias" or "handle"). E.g., "@susan".

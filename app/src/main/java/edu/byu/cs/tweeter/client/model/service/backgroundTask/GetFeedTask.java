@@ -17,14 +17,11 @@ import edu.byu.cs.tweeter.util.Pair;
 /**
  * Background task that retrieves a page of statuses from a user's feed.
  */
-public class GetFeedTask implements Runnable {
+public class GetFeedTask extends BackgroundTask {
     private static final String LOG_TAG = "GetFeedTask";
 
-    public static final String SUCCESS_KEY = "success";
     public static final String STATUSES_KEY = "statuses";
     public static final String MORE_PAGES_KEY = "more-pages";
-    public static final String MESSAGE_KEY = "message";
-    public static final String EXCEPTION_KEY = "exception";
 
     /**
      * Auth token for logged-in user.

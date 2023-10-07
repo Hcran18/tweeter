@@ -16,14 +16,11 @@ import edu.byu.cs.tweeter.util.Pair;
 /**
  * Background task that retrieves a page of other users being followed by a specified user.
  */
-public class GetFollowingTask implements Runnable {
+public class GetFollowingTask extends BackgroundTask {
     private static final String LOG_TAG = "GetFollowingTask";
 
-    public static final String SUCCESS_KEY = "success";
     public static final String FOLLOWEES_KEY = "followees";
     public static final String MORE_PAGES_KEY = "more-pages";
-    public static final String MESSAGE_KEY = "message";
-    public static final String EXCEPTION_KEY = "exception";
 
     /**
      * Auth token for logged-in user.
