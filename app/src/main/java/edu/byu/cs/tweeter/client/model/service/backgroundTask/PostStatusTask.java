@@ -15,17 +15,13 @@ public class PostStatusTask extends AuthenticatedTask {
     private static final String LOG_TAG = "PostStatusTask";
 
     /**
-     * Auth token for logged-in user.
-     */
-    private AuthToken authToken;
-    /**
      * The new status being sent. Contains all properties of the status,
      * including the identity of the user sending the status.
      */
     private Status status;
 
     public PostStatusTask(AuthToken authToken, Status status, Handler messageHandler) {
-        super(messageHandler);
+        super(messageHandler, authToken);
         this.authToken = authToken;
         this.status = status;
     }

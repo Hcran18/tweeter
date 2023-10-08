@@ -13,13 +13,8 @@ import edu.byu.cs.tweeter.model.domain.AuthToken;
 public class LogoutTask extends AuthenticatedTask {
     private static final String LOG_TAG = "LogoutTask";
 
-    /**
-     * Auth token for logged-in user.
-     */
-    private AuthToken authToken;
-
     public LogoutTask(AuthToken authToken, Handler messageHandler) {
-        super(messageHandler);
+        super(messageHandler, authToken);
         this.authToken = authToken;
     }
 

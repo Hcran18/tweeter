@@ -19,10 +19,6 @@ public class IsFollowerTask extends AuthenticatedTask {
     public static final String IS_FOLLOWER_KEY = "is-follower";
 
     /**
-     * Auth token for logged-in user.
-     */
-    private AuthToken authToken;
-    /**
      * The alleged follower.
      */
     private User follower;
@@ -32,7 +28,7 @@ public class IsFollowerTask extends AuthenticatedTask {
     private User followee;
 
     public IsFollowerTask(AuthToken authToken, User follower, User followee, Handler messageHandler) {
-        super(messageHandler);
+        super(messageHandler, authToken);
         this.authToken = authToken;
         this.follower = follower;
         this.followee = followee;

@@ -18,16 +18,12 @@ public class GetUserTask extends AuthenticatedTask {
     public static final String USER_KEY = "user";
 
     /**
-     * Auth token for logged-in user.
-     */
-    private AuthToken authToken;
-    /**
      * Alias (or handle) for user whose profile is being retrieved.
      */
     private String alias;
 
     public GetUserTask(AuthToken authToken, String alias, Handler messageHandler) {
-        super(messageHandler);
+        super(messageHandler, authToken);
         this.authToken = authToken;
         this.alias = alias;
     }

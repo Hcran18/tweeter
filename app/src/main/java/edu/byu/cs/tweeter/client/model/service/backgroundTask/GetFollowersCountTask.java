@@ -16,17 +16,13 @@ public class GetFollowersCountTask extends AuthenticatedTask {
     public static final String COUNT_KEY = "count";
 
     /**
-     * Auth token for logged-in user.
-     */
-    private AuthToken authToken;
-    /**
      * The user whose follower count is being retrieved.
      * (This can be any user, not just the currently logged-in user.)
      */
     private User targetUser;
 
     public GetFollowersCountTask(AuthToken authToken, User targetUser, Handler messageHandler) {
-        super(messageHandler);
+        super(messageHandler, authToken);
         this.authToken = authToken;
         this.targetUser = targetUser;
     }

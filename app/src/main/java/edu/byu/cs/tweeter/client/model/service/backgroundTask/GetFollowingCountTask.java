@@ -17,17 +17,13 @@ public class GetFollowingCountTask extends AuthenticatedTask {
     public static final String COUNT_KEY = "count";
 
     /**
-     * Auth token for logged-in user.
-     */
-    private AuthToken authToken;
-    /**
      * The user whose following count is being retrieved.
      * (This can be any user, not just the currently logged-in user.)
      */
     private User targetUser;
 
     public GetFollowingCountTask(AuthToken authToken, User targetUser, Handler messageHandler) {
-        super(messageHandler);
+        super(messageHandler, authToken);
         this.authToken = authToken;
         this.targetUser = targetUser;
     }

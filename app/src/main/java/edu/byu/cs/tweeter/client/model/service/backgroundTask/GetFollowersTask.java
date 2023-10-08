@@ -23,10 +23,6 @@ public class GetFollowersTask extends AuthenticatedTask {
     public static final String MORE_PAGES_KEY = "more-pages";
 
     /**
-     * Auth token for logged-in user.
-     */
-    private AuthToken authToken;
-    /**
      * The user whose followers are being retrieved.
      * (This can be any user, not just the currently logged-in user.)
      */
@@ -46,7 +42,7 @@ public class GetFollowersTask extends AuthenticatedTask {
 
     public GetFollowersTask(AuthToken authToken, User targetUser, int limit, User lastFollower,
                             Handler messageHandler) {
-        super(messageHandler);
+        super(messageHandler, authToken);
         this.authToken = authToken;
         this.targetUser = targetUser;
         this.limit = limit;
