@@ -7,24 +7,34 @@ import edu.byu.cs.tweeter.model.domain.AuthToken;
 import edu.byu.cs.tweeter.model.domain.User;
 
 public abstract class GetCountTask extends AuthenticatedTask {
+
     public static final String COUNT_KEY = "count";
+
     /**
-     * The user whose follower count is being retrieved.
+     * The user whose count is being retrieved.
      * (This can be any user, not just the currently logged-in user.)
      */
-    protected User targetUser;
+    private final User targetUser;
 
     private int count;
 
-    public GetCountTask(Handler messageHandler, AuthToken authToken, User targetUser) {
-        super(messageHandler, authToken);
+    protected GetCountTask(AuthToken authToken, User targetUser, Handler messageHandler) {
+        super(authToken, messageHandler);
         this.targetUser = targetUser;
     }
 
+    protected User getTargetUser() {
+        return targetUser;
+    }
+
     @Override
-    protected void doTask() {
-        // TODO: Currently using dummy data will implement later - milestone 4
+    protected void runTask() {
         count = runCountTask();
+
+        // Call sendSuccessMessage if successful
+        sendSuccessMessage();
+        // or call sendFailedMessage if not successful
+        // sendFailedMessage()
     }
 
     protected abstract int runCountTask();

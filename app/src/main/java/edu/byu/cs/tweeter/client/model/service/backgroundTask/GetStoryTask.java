@@ -12,17 +12,15 @@ import edu.byu.cs.tweeter.util.Pair;
 /**
  * Background task that retrieves a page of statuses from a user's story.
  */
-public class GetStoryTask extends PagedTask<Status> {
-    private static final String LOG_TAG = "GetStoryTask";
+public class GetStoryTask extends PagedStatusTask {
 
     public GetStoryTask(AuthToken authToken, User targetUser, int limit, Status lastStatus,
                         Handler messageHandler) {
-        super(messageHandler, authToken, targetUser, limit, lastStatus);
+        super(authToken, targetUser, limit, lastStatus, messageHandler);
     }
 
     @Override
     protected Pair<List<Status>, Boolean> getItems() {
-        Pair<List<Status>, Boolean> pageOfStatus = getFakeData().getPageOfStatus(getLastItem(), getLimit());
-        return pageOfStatus;
+        return getFakeData().getPageOfStatus(getLastItem(), getLimit());
     }
 }
