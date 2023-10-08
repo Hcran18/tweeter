@@ -43,7 +43,6 @@ public class GetFollowersTask extends AuthenticatedTask {
     public GetFollowersTask(AuthToken authToken, User targetUser, int limit, User lastFollower,
                             Handler messageHandler) {
         super(messageHandler, authToken);
-        this.authToken = authToken;
         this.targetUser = targetUser;
         this.limit = limit;
         this.lastFollower = lastFollower;

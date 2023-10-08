@@ -24,7 +24,6 @@ public class GetUserTask extends AuthenticatedTask {
 
     public GetUserTask(AuthToken authToken, String alias, Handler messageHandler) {
         super(messageHandler, authToken);
-        this.authToken = authToken;
         this.alias = alias;
     }
 

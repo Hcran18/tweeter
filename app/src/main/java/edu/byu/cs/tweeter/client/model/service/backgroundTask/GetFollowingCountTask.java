@@ -24,7 +24,6 @@ public class GetFollowingCountTask extends AuthenticatedTask {
 
     public GetFollowingCountTask(AuthToken authToken, User targetUser, Handler messageHandler) {
         super(messageHandler, authToken);
-        this.authToken = authToken;
         this.targetUser = targetUser;
     }
 

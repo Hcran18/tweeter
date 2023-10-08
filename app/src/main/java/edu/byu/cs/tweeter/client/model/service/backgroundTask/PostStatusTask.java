@@ -22,7 +22,6 @@ public class PostStatusTask extends AuthenticatedTask {
 
     public PostStatusTask(AuthToken authToken, Status status, Handler messageHandler) {
         super(messageHandler, authToken);
-        this.authToken = authToken;
         this.status = status;
     }
 

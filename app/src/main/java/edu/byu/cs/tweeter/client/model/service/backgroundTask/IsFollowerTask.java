@@ -29,7 +29,6 @@ public class IsFollowerTask extends AuthenticatedTask {
 
     public IsFollowerTask(AuthToken authToken, User follower, User followee, Handler messageHandler) {
         super(messageHandler, authToken);
-        this.authToken = authToken;
         this.follower = follower;
         this.followee = followee;
     }

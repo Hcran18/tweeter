@@ -21,7 +21,6 @@ public class UnfollowTask extends AuthenticatedTask {
 
     public UnfollowTask(AuthToken authToken, User followee, Handler messageHandler) {
         super(messageHandler, authToken);
-        this.authToken = authToken;
         this.followee = followee;
     }
 

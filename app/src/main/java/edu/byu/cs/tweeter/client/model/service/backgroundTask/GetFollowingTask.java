@@ -42,7 +42,6 @@ public class GetFollowingTask extends AuthenticatedTask {
     public GetFollowingTask(AuthToken authToken, User targetUser, int limit, User lastFollowee,
                             Handler messageHandler) {
         super(messageHandler, authToken);
-        this.authToken = authToken;
         this.targetUser = targetUser;
         this.limit = limit;
         this.lastFollowee = lastFollowee;

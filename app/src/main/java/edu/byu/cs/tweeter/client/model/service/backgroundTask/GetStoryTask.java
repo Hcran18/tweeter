@@ -44,7 +44,6 @@ public class GetStoryTask extends AuthenticatedTask {
     public GetStoryTask(AuthToken authToken, User targetUser, int limit, Status lastStatus,
                         Handler messageHandler) {
         super(messageHandler, authToken);
-        this.authToken = authToken;
         this.targetUser = targetUser;
         this.limit = limit;
         this.lastStatus = lastStatus;

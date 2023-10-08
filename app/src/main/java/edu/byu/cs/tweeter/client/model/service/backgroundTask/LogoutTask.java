@@ -15,7 +15,6 @@ public class LogoutTask extends AuthenticatedTask {
 
     public LogoutTask(AuthToken authToken, Handler messageHandler) {
         super(messageHandler, authToken);
-        this.authToken = authToken;
     }
 
     @Override
