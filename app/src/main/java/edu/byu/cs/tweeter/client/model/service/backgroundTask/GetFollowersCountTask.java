@@ -36,8 +36,20 @@ public class GetFollowersCountTask extends BackgroundTask {
         // TODO: Currently using dummy data will implement later - milestone 4
     }
 
+    // TODO: look into handle count
     @Override
     protected void loadSuccessBundle(Bundle msgBundle) {
         msgBundle.putInt(COUNT_KEY, count);
+    }
+
+    private void sendSuccessMessage(int count) {
+        Bundle msgBundle = new Bundle();
+        msgBundle.putBoolean(SUCCESS_KEY, true);
+        msgBundle.putInt(COUNT_KEY, count);
+
+        Message msg = Message.obtain();
+        msg.setData(msgBundle);
+
+        messageHandler.sendMessage(msg);
     }
 }

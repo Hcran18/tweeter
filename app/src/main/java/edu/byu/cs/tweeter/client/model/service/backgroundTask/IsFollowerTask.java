@@ -47,4 +47,16 @@ public class IsFollowerTask extends BackgroundTask {
     protected void loadSuccessBundle(Bundle msgBundle) {
         msgBundle.putBoolean(IS_FOLLOWER_KEY, isFollower);
     }
+
+    //TODO find how to user isFollower
+    private void sendSuccessMessage(boolean isFollower) {
+        Bundle msgBundle = new Bundle();
+        msgBundle.putBoolean(SUCCESS_KEY, true);
+        msgBundle.putBoolean(IS_FOLLOWER_KEY, isFollower);
+
+        Message msg = Message.obtain();
+        msg.setData(msgBundle);
+
+        messageHandler.sendMessage(msg);
+    }
 }

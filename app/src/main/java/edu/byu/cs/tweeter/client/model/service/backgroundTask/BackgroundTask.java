@@ -5,6 +5,8 @@ import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
 
+import androidx.annotation.NonNull;
+
 import java.io.Serializable;
 import java.util.List;
 
@@ -42,35 +44,39 @@ public abstract class BackgroundTask implements Runnable {
     protected abstract void doTask();
 
     private void sendSuccessMessage() {
-        Bundle msgBundle = new Bundle();
-        msgBundle.putBoolean(SUCCESS_KEY, true);
+        Bundle msgBundle = createBundle(true);
 
         loadSuccessBundle(msgBundle);
 
-        Message msg = Message.obtain();
-        msg.setData(msgBundle);
-
-        messageHandler.sendMessage(msg);
+        sendMessage(msgBundle);
     }
 
     protected abstract void loadSuccessBundle(Bundle msgBundle);
 
     private void sendFailedMessage(String message) {
-        Bundle msgBundle = new Bundle();
-        msgBundle.putBoolean(SUCCESS_KEY, false);
+        Bundle msgBundle = createBundle(false);
+
         msgBundle.putString(MESSAGE_KEY, message);
 
-        Message msg = Message.obtain();
-        msg.setData(msgBundle);
-
-        messageHandler.sendMessage(msg);
+        sendMessage(msgBundle);
     }
 
     private void sendExceptionMessage(Exception exception) {
-        Bundle msgBundle = new Bundle();
-        msgBundle.putBoolean(SUCCESS_KEY, false);
+        Bundle msgBundle = createBundle(false);
+
         msgBundle.putSerializable(EXCEPTION_KEY, exception);
 
+        sendMessage(msgBundle);
+    }
+
+    @NonNull
+    private static Bundle createBundle(boolean value) {
+        Bundle msgBundle = new Bundle();
+        msgBundle.putBoolean(SUCCESS_KEY, value);
+        return msgBundle;
+    }
+
+    private void sendMessage(Bundle msgBundle) {
         Message msg = Message.obtain();
         msg.setData(msgBundle);
 

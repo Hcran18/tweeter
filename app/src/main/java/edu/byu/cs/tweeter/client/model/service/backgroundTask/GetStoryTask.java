@@ -42,6 +42,9 @@ public class GetStoryTask extends BackgroundTask {
      */
     private Status lastStatus;
 
+    private List<Status> statuses;
+    private boolean hasMorePages;
+
     public GetStoryTask(AuthToken authToken, User targetUser, int limit, Status lastStatus,
                         Handler messageHandler) {
         super(messageHandler);
@@ -55,8 +58,8 @@ public class GetStoryTask extends BackgroundTask {
     protected void doTask() {
         Pair<List<Status>, Boolean> pageOfStatus = getStory();
 
-        List<Status> statuses = pageOfStatus.getFirst();
-        boolean hasMorePages = pageOfStatus.getSecond();
+        statuses = pageOfStatus.getFirst();
+        hasMorePages = pageOfStatus.getSecond();
     }
 
     @Override

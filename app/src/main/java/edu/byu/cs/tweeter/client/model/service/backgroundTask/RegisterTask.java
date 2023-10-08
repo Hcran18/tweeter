@@ -40,6 +40,9 @@ public class RegisterTask extends BackgroundTask {
      */
     private String image;
 
+    private User registeredUser;
+    private AuthToken authToken;
+
     public RegisterTask(String firstName, String lastName, String username, String password,
                         String image, Handler messageHandler) {
         super(messageHandler);
@@ -54,8 +57,8 @@ public class RegisterTask extends BackgroundTask {
     protected void doTask() {
         Pair<User, AuthToken> registerResult = doRegister();
 
-        User registeredUser = registerResult.getFirst();
-        AuthToken authToken = registerResult.getSecond();
+        registeredUser = registerResult.getFirst();
+        authToken = registerResult.getSecond();
     }
 
     @Override

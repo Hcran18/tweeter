@@ -41,6 +41,9 @@ public class GetFollowersTask extends BackgroundTask {
      */
     private User lastFollower;
 
+    private List<User> followers;
+    private boolean hasMorePages;
+
     public GetFollowersTask(AuthToken authToken, User targetUser, int limit, User lastFollower,
                             Handler messageHandler) {
         super(messageHandler);
@@ -63,20 +66,8 @@ public class GetFollowersTask extends BackgroundTask {
     protected void doTask() {
         Pair<List<User>, Boolean> pageOfUsers = getFollowers();
 
-        List<User> followers = pageOfUsers.getFirst();
-        boolean hasMorePages = pageOfUsers.getSecond();
-    }
-
-    private void sendSuccessMessage(List<User> followers, boolean hasMorePages) {
-        Bundle msgBundle = new Bundle();
-        msgBundle.putBoolean(SUCCESS_KEY, true);
-        msgBundle.putSerializable(FOLLOWERS_KEY, (Serializable) followers);
-        msgBundle.putBoolean(MORE_PAGES_KEY, hasMorePages);
-
-        Message msg = Message.obtain();
-        msg.setData(msgBundle);
-
-        messageHandler.sendMessage(msg);
+        followers = pageOfUsers.getFirst();
+        hasMorePages = pageOfUsers.getSecond();
     }
 
     @Override

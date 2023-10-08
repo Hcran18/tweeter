@@ -40,6 +40,8 @@ public class GetFollowingTask extends BackgroundTask {
      * This allows the new page to begin where the previous page ended.
      */
     private User lastFollowee;
+    private List<User> followees;
+    private boolean hasMorePages;
 
     public GetFollowingTask(AuthToken authToken, User targetUser, int limit, User lastFollowee,
                             Handler messageHandler) {
@@ -54,8 +56,8 @@ public class GetFollowingTask extends BackgroundTask {
     protected void doTask() {
         Pair<List<User>, Boolean> pageOfUsers = getFollowees();
 
-        List<User> followees = pageOfUsers.getFirst();
-        boolean hasMorePages = pageOfUsers.getSecond();
+        followees = pageOfUsers.getFirst();
+        hasMorePages = pageOfUsers.getSecond();
     }
 
     @Override

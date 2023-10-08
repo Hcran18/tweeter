@@ -29,6 +29,9 @@ public class LoginTask extends BackgroundTask {
      */
     private String password;
 
+    private User loggedInUser;
+    private AuthToken authToken;
+
     public LoginTask(String username, String password, Handler messageHandler) {
         super(messageHandler);
         this.username = username;
@@ -39,8 +42,8 @@ public class LoginTask extends BackgroundTask {
     protected void doTask() {
         Pair<User, AuthToken> loginResult = doLogin();
 
-        User loggedInUser = loginResult.getFirst();
-        AuthToken authToken = loginResult.getSecond();
+        loggedInUser = loginResult.getFirst();
+        authToken = loginResult.getSecond();
     }
 
     @Override
