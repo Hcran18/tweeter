@@ -16,51 +16,19 @@ import edu.byu.cs.tweeter.util.Pair;
 public class GetFollowersTask extends PagedTask<User> {
     private static final String LOG_TAG = "GetFollowersTask";
 
-    public static final String FOLLOWERS_KEY = "followers";
-    public static final String MORE_PAGES_KEY = "more-pages";
-
-    /**
-     * The user whose followers are being retrieved.
-     * (This can be any user, not just the currently logged-in user.)
-     */
-    private User targetUser;
-    /**
-     * Maximum number of followers to return (i.e., page size).
-     */
-    private int limit;
-    /**
-     * The last follower returned in the previous page of results (can be null).
-     * This allows the new page to begin where the previous page ended.
-     */
-    private User lastFollower;
-
-    private List<User> followers;
-    private boolean hasMorePages;
-
     public GetFollowersTask(AuthToken authToken, User targetUser, int limit, User lastFollower,
                             Handler messageHandler) {
-        super(messageHandler, authToken);
-        this.targetUser = targetUser;
-        this.limit = limit;
-        this.lastFollower = lastFollower;
+        super(messageHandler, authToken, targetUser, limit, lastFollower);
     }
 
-    private Pair<List<User>, Boolean> getFollowers() {
-        Pair<List<User>, Boolean> pageOfUsers = getFakeData().getPageOfUsers(lastFollower, limit, targetUser);
+    @Override
+    protected Pair<List<User>, Boolean> getItems() {
+        Pair<List<User>, Boolean> pageOfUsers = getFakeData().getPageOfUsers(getLastItem(), getLimit(), getTargetUser());
         return pageOfUsers;
     }
 
     @Override
-    protected void doTask() {
-        Pair<List<User>, Boolean> pageOfUsers = getFollowers();
-
-        followers = pageOfUsers.getFirst();
-        hasMorePages = pageOfUsers.getSecond();
-    }
-
-    @Override
     protected void loadSuccessBundle(Bundle msgBundle) {
-        msgBundle.putSerializable(FOLLOWERS_KEY, (Serializable) followers);
-        msgBundle.putBoolean(MORE_PAGES_KEY, hasMorePages);
+        super.loadSuccessBundle(msgBundle);
     }
 }
