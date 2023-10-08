@@ -11,41 +11,15 @@ import edu.byu.cs.tweeter.model.domain.User;
 /**
  * Background task that queries how many other users a specified user is following.
  */
-public class GetFollowingCountTask extends AuthenticatedTask {
+public class GetFollowingCountTask extends GetCountTask {
     private static final String LOG_TAG = "GetFollowingCountTask";
 
-    public static final String COUNT_KEY = "count";
-
-    /**
-     * The user whose following count is being retrieved.
-     * (This can be any user, not just the currently logged-in user.)
-     */
-    private User targetUser;
-
     public GetFollowingCountTask(AuthToken authToken, User targetUser, Handler messageHandler) {
-        super(messageHandler, authToken);
-        this.targetUser = targetUser;
+        super(messageHandler, authToken, targetUser);
     }
 
     @Override
-    protected void doTask() {
-        // TODO: Currently using dummy data will implement later - milestone 4
-    }
-
-    @Override
-    protected void loadSuccessBundle(Bundle msgBundle) {
-        msgBundle.putInt(COUNT_KEY, count);
-    }
-
-    //TODO look into how to handle count
-    private void sendSuccessMessage(int count) {
-        Bundle msgBundle = new Bundle();
-        msgBundle.putBoolean(SUCCESS_KEY, true);
-        msgBundle.putInt(COUNT_KEY, count);
-
-        Message msg = Message.obtain();
-        msg.setData(msgBundle);
-
-        messageHandler.sendMessage(msg);
+    protected int runCountTask() {
+        return 20;
     }
 }

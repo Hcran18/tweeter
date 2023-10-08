@@ -27,6 +27,8 @@ public class IsFollowerTask extends AuthenticatedTask {
      */
     private User followee;
 
+    private Boolean isFollower;
+
     public IsFollowerTask(AuthToken authToken, User follower, User followee, Handler messageHandler) {
         super(messageHandler, authToken);
         this.follower = follower;
@@ -35,23 +37,11 @@ public class IsFollowerTask extends AuthenticatedTask {
 
     @Override
     protected void doTask() {
-        //sendSuccessMessage(new Random().nextInt() > 0);
+        isFollower = new Random().nextInt() > 0;
     }
 
     @Override
     protected void loadSuccessBundle(Bundle msgBundle) {
         msgBundle.putBoolean(IS_FOLLOWER_KEY, isFollower);
-    }
-
-    //TODO find how to user isFollower
-    private void sendSuccessMessage(boolean isFollower) {
-        Bundle msgBundle = new Bundle();
-        msgBundle.putBoolean(SUCCESS_KEY, true);
-        msgBundle.putBoolean(IS_FOLLOWER_KEY, isFollower);
-
-        Message msg = Message.obtain();
-        msg.setData(msgBundle);
-
-        messageHandler.sendMessage(msg);
     }
 }

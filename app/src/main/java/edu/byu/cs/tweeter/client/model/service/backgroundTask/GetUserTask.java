@@ -22,6 +22,8 @@ public class GetUserTask extends AuthenticatedTask {
      */
     private String alias;
 
+    private User user;
+
     public GetUserTask(AuthToken authToken, String alias, Handler messageHandler) {
         super(messageHandler, authToken);
         this.alias = alias;
@@ -29,7 +31,7 @@ public class GetUserTask extends AuthenticatedTask {
 
     @Override
     protected void doTask() {
-        User user = getUser();
+        user = getUser();
     }
 
     @Override
@@ -40,17 +42,5 @@ public class GetUserTask extends AuthenticatedTask {
     private User getUser() {
         User user = getFakeData().findUserByAlias(alias);
         return user;
-    }
-
-    //TODO find how to handle user
-    private void sendSuccessMessage(User user) {
-        Bundle msgBundle = new Bundle();
-        msgBundle.putBoolean(SUCCESS_KEY, true);
-        msgBundle.putSerializable(USER_KEY, user);
-
-        Message msg = Message.obtain();
-        msg.setData(msgBundle);
-
-        messageHandler.sendMessage(msg);
     }
 }
