@@ -7,12 +7,7 @@ import android.util.Log;
 
 import androidx.annotation.NonNull;
 
-import java.io.Serializable;
-import java.util.List;
-
-import edu.byu.cs.tweeter.model.domain.User;
 import edu.byu.cs.tweeter.util.FakeData;
-import edu.byu.cs.tweeter.util.Pair;
 
 public abstract class BackgroundTask implements Runnable {
     private static final String LOG_TAG = "BackgroundTask";
