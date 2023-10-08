@@ -16,7 +16,7 @@ import edu.byu.cs.tweeter.util.Pair;
 /**
  * Background task that retrieves a page of other users being followed by a specified user.
  */
-public class GetFollowingTask extends BackgroundTask {
+public class GetFollowingTask extends AuthenticatedTask {
     private static final String LOG_TAG = "GetFollowingTask";
 
     public static final String FOLLOWEES_KEY = "followees";
@@ -64,10 +64,6 @@ public class GetFollowingTask extends BackgroundTask {
     protected void loadSuccessBundle(Bundle msgBundle) {
         msgBundle.putSerializable(FOLLOWEES_KEY, (Serializable) followees);
         msgBundle.putBoolean(MORE_PAGES_KEY, hasMorePages);
-    }
-
-    private FakeData getFakeData() {
-        return FakeData.getInstance();
     }
 
     private Pair<List<User>, Boolean> getFollowees() {

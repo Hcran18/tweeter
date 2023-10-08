@@ -2,12 +2,9 @@ package edu.byu.cs.tweeter.client.model.service.backgroundTask;
 
 import android.os.Bundle;
 import android.os.Handler;
-import android.os.Message;
-import android.util.Log;
 
 import edu.byu.cs.tweeter.model.domain.AuthToken;
 import edu.byu.cs.tweeter.model.domain.User;
-import edu.byu.cs.tweeter.util.FakeData;
 import edu.byu.cs.tweeter.util.Pair;
 
 /**
@@ -65,10 +62,6 @@ public class RegisterTask extends BackgroundTask {
     protected void loadSuccessBundle(Bundle msgBundle) {
         msgBundle.putSerializable(USER_KEY, registeredUser);
         msgBundle.putSerializable(AUTH_TOKEN_KEY, authToken);
-    }
-
-    private FakeData getFakeData() {
-        return FakeData.getInstance();
     }
 
     private Pair<User, AuthToken> doRegister() {

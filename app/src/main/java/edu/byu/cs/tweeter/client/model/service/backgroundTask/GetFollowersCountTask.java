@@ -11,7 +11,7 @@ import edu.byu.cs.tweeter.model.domain.User;
 /**
  * Background task that queries how many followers a user has.
  */
-public class GetFollowersCountTask extends BackgroundTask {
+public class GetFollowersCountTask extends AuthenticatedTask {
     private static final String LOG_TAG = "GetFollowersCountTask";
     public static final String COUNT_KEY = "count";
 
@@ -42,6 +42,7 @@ public class GetFollowersCountTask extends BackgroundTask {
         msgBundle.putInt(COUNT_KEY, count);
     }
 
+    //TODO look into how to handle count
     private void sendSuccessMessage(int count) {
         Bundle msgBundle = new Bundle();
         msgBundle.putBoolean(SUCCESS_KEY, true);

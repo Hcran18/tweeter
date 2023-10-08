@@ -11,7 +11,7 @@ import edu.byu.cs.tweeter.model.domain.User;
 /**
  * Background task that establishes a following relationship between two users.
  */
-public class FollowTask extends BackgroundTask {
+public class FollowTask extends AuthenticatedTask {
     private static final String LOG_TAG = "FollowTask";
 
     /**

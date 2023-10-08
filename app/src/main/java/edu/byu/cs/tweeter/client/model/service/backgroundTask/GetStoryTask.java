@@ -17,7 +17,7 @@ import edu.byu.cs.tweeter.util.Pair;
 /**
  * Background task that retrieves a page of statuses from a user's story.
  */
-public class GetStoryTask extends BackgroundTask {
+public class GetStoryTask extends AuthenticatedTask {
     private static final String LOG_TAG = "GetStoryTask";
 
     public static final String STATUSES_KEY = "statuses";
@@ -66,10 +66,6 @@ public class GetStoryTask extends BackgroundTask {
     protected void loadSuccessBundle(Bundle msgBundle) {
         msgBundle.putSerializable(STATUSES_KEY, (Serializable) statuses);
         msgBundle.putBoolean(MORE_PAGES_KEY, hasMorePages);
-    }
-
-    private FakeData getFakeData() {
-        return FakeData.getInstance();
     }
 
     private Pair<List<Status>, Boolean> getStory() {

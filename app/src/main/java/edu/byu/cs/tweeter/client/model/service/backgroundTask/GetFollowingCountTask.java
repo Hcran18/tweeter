@@ -11,7 +11,7 @@ import edu.byu.cs.tweeter.model.domain.User;
 /**
  * Background task that queries how many other users a specified user is following.
  */
-public class GetFollowingCountTask extends BackgroundTask {
+public class GetFollowingCountTask extends AuthenticatedTask {
     private static final String LOG_TAG = "GetFollowingCountTask";
 
     public static final String COUNT_KEY = "count";

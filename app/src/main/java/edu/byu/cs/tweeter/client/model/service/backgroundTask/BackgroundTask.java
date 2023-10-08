@@ -11,6 +11,7 @@ import java.io.Serializable;
 import java.util.List;
 
 import edu.byu.cs.tweeter.model.domain.User;
+import edu.byu.cs.tweeter.util.FakeData;
 import edu.byu.cs.tweeter.util.Pair;
 
 public abstract class BackgroundTask implements Runnable {
@@ -81,5 +82,9 @@ public abstract class BackgroundTask implements Runnable {
         msg.setData(msgBundle);
 
         messageHandler.sendMessage(msg);
+    }
+
+    protected FakeData getFakeData() {
+        return FakeData.getInstance();
     }
 }

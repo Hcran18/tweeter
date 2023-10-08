@@ -16,7 +16,7 @@ import edu.byu.cs.tweeter.util.Pair;
 /**
  * Background task that retrieves a page of followers.
  */
-public class GetFollowersTask extends BackgroundTask {
+public class GetFollowersTask extends AuthenticatedTask {
     private static final String LOG_TAG = "GetFollowersTask";
 
     public static final String FOLLOWERS_KEY = "followers";
@@ -51,10 +51,6 @@ public class GetFollowersTask extends BackgroundTask {
         this.targetUser = targetUser;
         this.limit = limit;
         this.lastFollower = lastFollower;
-    }
-
-    private FakeData getFakeData() {
-        return FakeData.getInstance();
     }
 
     private Pair<List<User>, Boolean> getFollowers() {

@@ -52,10 +52,6 @@ public class LoginTask extends BackgroundTask {
         msgBundle.putSerializable(AUTH_TOKEN_KEY, authToken);
     }
 
-    private FakeData getFakeData() {
-        return FakeData.getInstance();
-    }
-
     private Pair<User, AuthToken> doLogin() {
         User loggedInUser = getFakeData().getFirstUser();
         AuthToken authToken = getFakeData().getAuthToken();

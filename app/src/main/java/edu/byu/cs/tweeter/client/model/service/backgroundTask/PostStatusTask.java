@@ -11,7 +11,7 @@ import edu.byu.cs.tweeter.model.domain.Status;
 /**
  * Background task that posts a new status sent by a user.
  */
-public class PostStatusTask extends BackgroundTask {
+public class PostStatusTask extends AuthenticatedTask {
     private static final String LOG_TAG = "PostStatusTask";
 
     /**
