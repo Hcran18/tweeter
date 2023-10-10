@@ -9,27 +9,42 @@ import androidx.annotation.NonNull;
 import edu.byu.cs.tweeter.client.model.service.FollowService;
 import edu.byu.cs.tweeter.client.model.service.backgroundTask.FollowTask;
 
-public class FollowHandler extends Handler {
-    private FollowService.FollowObserver observer;
+public class FollowHandler extends MainHandler<FollowService.FollowObserver> {
 
     public FollowHandler(FollowService.FollowObserver observer) {
-        super(Looper.getMainLooper());
-        this.observer = observer;
+        super(observer);
     }
 
     @Override
-    public void handleMessage(@NonNull Message msg) {
-        boolean success = msg.getData().getBoolean(FollowTask.SUCCESS_KEY);
-        if (success) {
-            observer.updateFollow(false);
-        } else if (msg.getData().containsKey(FollowTask.MESSAGE_KEY)) {
-            String message = msg.getData().getString(FollowTask.MESSAGE_KEY);
-            observer.displayError("Failed to follow: " + message);
-        } else if (msg.getData().containsKey(FollowTask.EXCEPTION_KEY)) {
-            Exception ex = (Exception) msg.getData().getSerializable(FollowTask.EXCEPTION_KEY);
-            observer.displayError("Failed to follow because of exception: " + ex.getMessage());
-        }
+    protected void handleException(Exception ex) {
+        getObserver().displayError("Failed to follow because of exception: " + ex.getMessage());
+        getObserver().followEnable(true);
+    }
 
-        observer.followEnable(true);
+    @Override
+    protected String getExceptionKey() {
+        return FollowTask.EXCEPTION_KEY;
+    }
+
+    @Override
+    protected void handleError(String message) {
+        getObserver().displayError("Failed to follow: " + message);
+        getObserver().followEnable(true);
+    }
+
+    @Override
+    protected String getMessageKey() {
+        return FollowTask.MESSAGE_KEY;
+    }
+
+    @Override
+    protected void handleSuccess(Message msg) {
+        getObserver().updateFollow(false);
+        getObserver().followEnable(true);
+    }
+
+    @Override
+    protected String getSuccessKey() {
+        return FollowTask.SUCCESS_KEY;
     }
 }
