@@ -15,28 +15,41 @@ import edu.byu.cs.tweeter.model.domain.Status;
 /**
  * Message handler (i.e., observer) for GetFeedTask.
  */
-public class GetFeedHandler extends Handler {
-
-    private StatusService.StatusObserver observer;
+public class GetFeedHandler extends MainHandler<StatusService.StatusObserver> {
 
     public GetFeedHandler(StatusService.StatusObserver observer) {
-        super(Looper.getMainLooper());
-        this.observer = observer;
+        super(observer);
     }
 
     @Override
-    public void handleMessage(@NonNull Message msg) {
-        boolean success = msg.getData().getBoolean(GetFeedTask.SUCCESS_KEY);
-        if (success) {
-            List<Status> statuses = (List<Status>) msg.getData().getSerializable(GetFeedTask.ITEMS_KEY);
-            boolean hasMorePages = msg.getData().getBoolean(GetFeedTask.MORE_PAGES_KEY);
-            observer.addMoreStatuses(statuses, hasMorePages);
-        } else if (msg.getData().containsKey(GetFeedTask.MESSAGE_KEY)) {
-            String message = msg.getData().getString(GetFeedTask.MESSAGE_KEY);
-            observer.displayError("Failed to get feed: " + message);
-        } else if (msg.getData().containsKey(GetFeedTask.EXCEPTION_KEY)) {
-            Exception ex = (Exception) msg.getData().getSerializable(GetFeedTask.EXCEPTION_KEY);
-            observer.displayException(ex);
-        }
+    protected void handleException(Exception ex) {
+        getObserver().displayException(ex);
+    }
+
+    @Override
+    protected String getExceptionKey() {
+        return GetFeedTask.EXCEPTION_KEY;
+    }
+
+    @Override
+    protected void handleError(String message) {
+        getObserver().displayError("Failed to get feed: " + message);
+    }
+
+    @Override
+    protected String getMessageKey() {
+        return GetFeedTask.MESSAGE_KEY;
+    }
+
+    @Override
+    protected void handleSuccess(Message msg) {
+        List<Status> statuses = (List<Status>) msg.getData().getSerializable(GetFeedTask.ITEMS_KEY);
+        boolean hasMorePages = msg.getData().getBoolean(GetFeedTask.MORE_PAGES_KEY);
+        getObserver().addMoreStatuses(statuses, hasMorePages);
+    }
+
+    @Override
+    protected String getSuccessKey() {
+        return GetFeedTask.SUCCESS_KEY;
     }
 }
