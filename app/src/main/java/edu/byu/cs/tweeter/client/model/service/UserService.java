@@ -14,7 +14,7 @@ import edu.byu.cs.tweeter.client.model.service.backgroundTask.handler.RegisterHa
 import edu.byu.cs.tweeter.model.domain.AuthToken;
 import edu.byu.cs.tweeter.model.domain.User;
 
-public class UserService {
+public class UserService extends Service {
 
     public interface UserObserver {
 
@@ -41,32 +41,23 @@ public class UserService {
 
     public void login(String alias, String password, LoginObserver observer) {
         // Send the login request.
-        LoginTask loginTask = new LoginTask(alias, password, new LoginHandler(observer));
-        ExecutorService executor = Executors.newSingleThreadExecutor();
-        executor.execute(loginTask);
+        executeTask(new LoginTask(alias, password, new LoginHandler(observer)));
     }
 
     public void getUser(AuthToken currUserAuthToken, String aliasString, UserObserver observer) {
-        GetUserTask getUserTask = new GetUserTask(currUserAuthToken,
-                aliasString, new GetUserHandler(observer));
-        ExecutorService executor = Executors.newSingleThreadExecutor();
-        executor.execute(getUserTask);
+        executeTask(new GetUserTask(currUserAuthToken,
+                aliasString, new GetUserHandler(observer)));
 
         observer.displayGettingProfile("Getting user's profile...");
     }
 
     public void register(String firstName, String lastName, String alias, String password, String imageBytesBase64, RegisterObserver observer) {
         // Send register request.
-        RegisterTask registerTask = new RegisterTask(firstName, lastName,
-                alias, password, imageBytesBase64, new RegisterHandler(observer));
-
-        ExecutorService executor = Executors.newSingleThreadExecutor();
-        executor.execute(registerTask);
+        executeTask(new RegisterTask(firstName, lastName,
+                alias, password, imageBytesBase64, new RegisterHandler(observer)));
     }
 
     public void logout(AuthToken currUserAuthToken, UserObserver observer) {
-        LogoutTask logoutTask = new LogoutTask(currUserAuthToken, new LogoutHandler(observer));
-        ExecutorService executor = Executors.newSingleThreadExecutor();
-        executor.execute(logoutTask);
+        executeTask(new LogoutTask(currUserAuthToken, new LogoutHandler(observer)));
     }
 }

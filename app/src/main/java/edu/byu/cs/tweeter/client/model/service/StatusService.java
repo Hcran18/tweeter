@@ -14,7 +14,7 @@ import edu.byu.cs.tweeter.model.domain.AuthToken;
 import edu.byu.cs.tweeter.model.domain.Status;
 import edu.byu.cs.tweeter.model.domain.User;
 
-public class StatusService {
+public class StatusService extends Service {
 
     public interface StatusObserver {
 
@@ -28,23 +28,17 @@ public class StatusService {
     }
 
     public void loadMoreFeed(AuthToken currUserAuthToken, User user, int pageSize, Status lastStatus, StatusObserver observer) {
-        GetFeedTask getFeedTask = new GetFeedTask(currUserAuthToken,
-                user, pageSize, lastStatus, new GetFeedHandler(observer));
-        ExecutorService executor = Executors.newSingleThreadExecutor();
-        executor.execute(getFeedTask);
+        executeTask(new GetFeedTask(currUserAuthToken,
+                user, pageSize, lastStatus, new GetFeedHandler(observer)));
     }
 
     public void loadMoreStory(AuthToken currUserAuthToken, User user, int pageSize, Status lastStatus, StatusObserver observer) {
-        GetStoryTask getStoryTask = new GetStoryTask(currUserAuthToken,
-                user, pageSize, lastStatus, new GetStoryHandler(observer));
-        ExecutorService executor = Executors.newSingleThreadExecutor();
-        executor.execute(getStoryTask);
+        executeTask(new GetStoryTask(currUserAuthToken,
+                user, pageSize, lastStatus, new GetStoryHandler(observer)));
     }
 
     public void post(Status newStatus, AuthToken currUserAuthToken, StatusObserver observer) {
-        PostStatusTask statusTask = new PostStatusTask(currUserAuthToken,
-                newStatus, new PostStatusHandler(observer));
-        ExecutorService executor = Executors.newSingleThreadExecutor();
-        executor.execute(statusTask);
+        executeTask(new PostStatusTask(currUserAuthToken,
+                newStatus, new PostStatusHandler(observer)));
     }
 }
