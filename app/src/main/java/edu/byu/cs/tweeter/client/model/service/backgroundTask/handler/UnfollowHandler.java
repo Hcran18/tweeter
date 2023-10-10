@@ -9,27 +9,42 @@ import androidx.annotation.NonNull;
 import edu.byu.cs.tweeter.client.model.service.FollowService;
 import edu.byu.cs.tweeter.client.model.service.backgroundTask.UnfollowTask;
 
-public class UnfollowHandler extends Handler {
-    private FollowService.FollowObserver observer;
+public class UnfollowHandler extends MainHandler<FollowService.FollowObserver> {
 
     public UnfollowHandler(FollowService.FollowObserver observer) {
-        super(Looper.getMainLooper());
-        this.observer = observer;
+        super(observer);
     }
 
     @Override
-    public void handleMessage(@NonNull Message msg) {
-        boolean success = msg.getData().getBoolean(UnfollowTask.SUCCESS_KEY);
-        if (success) {
-            observer.updateFollow(true);
-        } else if (msg.getData().containsKey(UnfollowTask.MESSAGE_KEY)) {
-            String message = msg.getData().getString(UnfollowTask.MESSAGE_KEY);
-            observer.displayError("Failed to unfollow: " + message);
-        } else if (msg.getData().containsKey(UnfollowTask.EXCEPTION_KEY)) {
-            Exception ex = (Exception) msg.getData().getSerializable(UnfollowTask.EXCEPTION_KEY);
-            observer.displayError("Failed to unfollow because of exception: " + ex.getMessage());
-        }
+    protected void handleException(Exception ex) {
+        getObserver().displayError("Failed to unfollow because of exception: " + ex.getMessage());
+        getObserver().followEnable(true);
+    }
 
-        observer.followEnable(true);
+    @Override
+    protected String getExceptionKey() {
+        return UnfollowTask.EXCEPTION_KEY;
+    }
+
+    @Override
+    protected void handleError(String message) {
+        getObserver().displayError("Failed to unfollow: " + message);
+        getObserver().followEnable(true);
+    }
+
+    @Override
+    protected String getMessageKey() {
+        return UnfollowTask.MESSAGE_KEY;
+    }
+
+    @Override
+    protected void handleSuccess(Message msg) {
+        getObserver().updateFollow(true);
+        getObserver().followEnable(true);
+    }
+
+    @Override
+    protected String getSuccessKey() {
+        return UnfollowTask.SUCCESS_KEY;
     }
 }

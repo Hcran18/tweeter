@@ -15,28 +15,41 @@ import edu.byu.cs.tweeter.model.domain.Status;
 /**
  * Message handler (i.e., observer) for GetStoryTask.
  */
-public class GetStoryHandler extends Handler {
-
-    private StatusService.StatusObserver observer;
+public class GetStoryHandler extends MainHandler<StatusService.StatusObserver> {
 
     public GetStoryHandler(StatusService.StatusObserver observer) {
-        super(Looper.getMainLooper());
-        this.observer = observer;
+        super(observer);
     }
 
     @Override
-    public void handleMessage(@NonNull Message msg) {
-        boolean success = msg.getData().getBoolean(GetStoryTask.SUCCESS_KEY);
-        if (success) {
-            List<Status> statuses = (List<Status>) msg.getData().getSerializable(GetStoryTask.ITEMS_KEY);
-            boolean hasMorePages = msg.getData().getBoolean(GetStoryTask.MORE_PAGES_KEY);
-            observer.addMoreStatuses(statuses, hasMorePages);
-        } else if (msg.getData().containsKey(GetStoryTask.MESSAGE_KEY)) {
-            String message = msg.getData().getString(GetStoryTask.MESSAGE_KEY);
-            observer.displayError(message);
-        } else if (msg.getData().containsKey(GetStoryTask.EXCEPTION_KEY)) {
-            Exception ex = (Exception) msg.getData().getSerializable(GetStoryTask.EXCEPTION_KEY);
-            observer.displayException(ex);
-        }
+    protected void handleException(Exception ex) {
+        getObserver().displayException(ex);
+    }
+
+    @Override
+    protected String getExceptionKey() {
+        return GetStoryTask.EXCEPTION_KEY;
+    }
+
+    @Override
+    protected void handleError(String message) {
+        getObserver().displayError(message);
+    }
+
+    @Override
+    protected String getMessageKey() {
+        return GetStoryTask.MESSAGE_KEY;
+    }
+
+    @Override
+    protected void handleSuccess(Message msg) {
+        List<Status> statuses = (List<Status>) msg.getData().getSerializable(GetStoryTask.ITEMS_KEY);
+        boolean hasMorePages = msg.getData().getBoolean(GetStoryTask.MORE_PAGES_KEY);
+        getObserver().addMoreStatuses(statuses, hasMorePages);
+    }
+
+    @Override
+    protected String getSuccessKey() {
+        return GetStoryTask.SUCCESS_KEY;
     }
 }

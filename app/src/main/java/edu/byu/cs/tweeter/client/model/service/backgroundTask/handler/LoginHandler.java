@@ -15,32 +15,45 @@ import edu.byu.cs.tweeter.model.domain.User;
 /**
  * Message handler (i.e., observer) for LoginTask
  */
-public class LoginHandler extends Handler {
-
-    private UserService.LoginObserver observer;
+public class LoginHandler extends MainHandler<UserService.LoginObserver> {
 
     public LoginHandler(UserService.LoginObserver observer) {
-        super(Looper.getMainLooper());
-        this.observer = observer;
+        super(observer);
     }
 
     @Override
-    public void handleMessage(@NonNull Message msg) {
-        boolean success = msg.getData().getBoolean(LoginTask.SUCCESS_KEY);
-        if (success) {
-            User loggedInUser = (User) msg.getData().getSerializable(LoginTask.USER_KEY);
-            AuthToken authToken = (AuthToken) msg.getData().getSerializable(LoginTask.AUTH_TOKEN_KEY);
+    protected void handleException(Exception ex) {
+        getObserver().loginFailed("Failed to login because of exception: " + ex.getMessage());
+    }
 
-            Cache.getInstance().setCurrUser(loggedInUser);
-            Cache.getInstance().setCurrUserAuthToken(authToken);
+    @Override
+    protected String getExceptionKey() {
+        return LoginTask.EXCEPTION_KEY;
+    }
 
-            observer.loginSucceeded(authToken, loggedInUser);
-        } else if (msg.getData().containsKey(LoginTask.MESSAGE_KEY)) {
-            String message = msg.getData().getString(LoginTask.MESSAGE_KEY);
-            observer.loginFailed("Failed to login: " + message);
-        } else if (msg.getData().containsKey(LoginTask.EXCEPTION_KEY)) {
-            Exception ex = (Exception) msg.getData().getSerializable(LoginTask.EXCEPTION_KEY);
-            observer.loginFailed("Failed to login because of exception: " + ex.getMessage());
-        }
+    @Override
+    protected void handleError(String message) {
+        getObserver().loginFailed("Failed to login: " + message);
+    }
+
+    @Override
+    protected String getMessageKey() {
+        return LoginTask.MESSAGE_KEY;
+    }
+
+    @Override
+    protected void handleSuccess(Message msg) {
+        User loggedInUser = (User) msg.getData().getSerializable(LoginTask.USER_KEY);
+        AuthToken authToken = (AuthToken) msg.getData().getSerializable(LoginTask.AUTH_TOKEN_KEY);
+
+        Cache.getInstance().setCurrUser(loggedInUser);
+        Cache.getInstance().setCurrUserAuthToken(authToken);
+
+        getObserver().loginSucceeded(authToken, loggedInUser);
+    }
+
+    @Override
+    protected String getSuccessKey() {
+        return LoginTask.SUCCESS_KEY;
     }
 }

@@ -9,25 +9,39 @@ import androidx.annotation.NonNull;
 import edu.byu.cs.tweeter.client.model.service.StatusService;
 import edu.byu.cs.tweeter.client.model.service.backgroundTask.PostStatusTask;
 
-public class PostStatusHandler extends Handler {
-    private StatusService.StatusObserver observer;
+public class PostStatusHandler extends MainHandler<StatusService.StatusObserver> {
 
     public PostStatusHandler(StatusService.StatusObserver observer) {
-        super(Looper.getMainLooper());
-        this.observer = observer;
+        super(observer);
     }
 
     @Override
-    public void handleMessage(@NonNull Message msg) {
-        boolean success = msg.getData().getBoolean(PostStatusTask.SUCCESS_KEY);
-        if (success) {
-            observer.postSuccess();
-        } else if (msg.getData().containsKey(PostStatusTask.MESSAGE_KEY)) {
-            String message = msg.getData().getString(PostStatusTask.MESSAGE_KEY);
-            observer.displayError("Failed to post status: " + message);
-        } else if (msg.getData().containsKey(PostStatusTask.EXCEPTION_KEY)) {
-            Exception ex = (Exception) msg.getData().getSerializable(PostStatusTask.EXCEPTION_KEY);
-            observer.displayError("Failed to post status because of exception: " + ex.getMessage());
-        }
+    protected void handleException(Exception ex) {
+        getObserver().displayError("Failed to post status because of exception: " + ex.getMessage());
+    }
+
+    @Override
+    protected String getExceptionKey() {
+        return PostStatusTask.EXCEPTION_KEY;
+    }
+
+    @Override
+    protected void handleError(String message) {
+        getObserver().displayError("Failed to post status: " + message);
+    }
+
+    @Override
+    protected String getMessageKey() {
+        return PostStatusTask.MESSAGE_KEY;
+    }
+
+    @Override
+    protected void handleSuccess(Message msg) {
+        getObserver().postSuccess();
+    }
+
+    @Override
+    protected String getSuccessKey() {
+        return PostStatusTask.SUCCESS_KEY;
     }
 }

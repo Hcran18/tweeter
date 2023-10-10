@@ -9,25 +9,39 @@ import androidx.annotation.NonNull;
 import edu.byu.cs.tweeter.client.model.service.UserService;
 import edu.byu.cs.tweeter.client.model.service.backgroundTask.LogoutTask;
 
-public class LogoutHandler extends Handler {
-    private UserService.UserObserver observer;
+public class LogoutHandler extends MainHandler<UserService.UserObserver> {
 
     public LogoutHandler(UserService.UserObserver observer) {
-        super(Looper.getMainLooper());
-        this.observer = observer;
+        super(observer);
     }
 
     @Override
-    public void handleMessage(@NonNull Message msg) {
-        boolean success = msg.getData().getBoolean(LogoutTask.SUCCESS_KEY);
-        if (success) {
-            observer.logOutCancel();
-        } else if (msg.getData().containsKey(LogoutTask.MESSAGE_KEY)) {
-            String message = msg.getData().getString(LogoutTask.MESSAGE_KEY);
-            observer.displayError("Failed to logout: " + message);
-        } else if (msg.getData().containsKey(LogoutTask.EXCEPTION_KEY)) {
-            Exception ex = (Exception) msg.getData().getSerializable(LogoutTask.EXCEPTION_KEY);
-            observer.displayError("Failed to logout because of exception: " + ex.getMessage());
-        }
+    protected void handleException(Exception ex) {
+        getObserver().displayError("Failed to logout because of exception: " + ex.getMessage());
+    }
+
+    @Override
+    protected String getExceptionKey() {
+        return LogoutTask.EXCEPTION_KEY;
+    }
+
+    @Override
+    protected void handleError(String message) {
+        getObserver().displayError("Failed to logout: " + message);
+    }
+
+    @Override
+    protected String getMessageKey() {
+        return LogoutTask.MESSAGE_KEY;
+    }
+
+    @Override
+    protected void handleSuccess(Message msg) {
+        getObserver().logOutCancel();
+    }
+
+    @Override
+    protected String getSuccessKey() {
+        return LogoutTask.SUCCESS_KEY;
     }
 }

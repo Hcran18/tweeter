@@ -9,33 +9,46 @@ import androidx.annotation.NonNull;
 import edu.byu.cs.tweeter.client.model.service.FollowService;
 import edu.byu.cs.tweeter.client.model.service.backgroundTask.IsFollowerTask;
 
-public class IsFollowerHandler extends Handler {
-
-    private FollowService.FollowObserver observer;
+public class IsFollowerHandler extends MainHandler<FollowService.FollowObserver> {
 
     public IsFollowerHandler(FollowService.FollowObserver observer) {
-        super(Looper.getMainLooper());
-        this.observer = observer;
+        super(observer);
     }
 
     @Override
-    public void handleMessage(@NonNull Message msg) {
-        boolean success = msg.getData().getBoolean(IsFollowerTask.SUCCESS_KEY);
-        if (success) {
-            boolean isFollower = msg.getData().getBoolean(IsFollowerTask.IS_FOLLOWER_KEY);
+    protected void handleException(Exception ex) {
+        getObserver().displayException(ex);
+    }
 
-            // If logged in user if a follower of the selected user, display the follow button as "following"
-            if (isFollower) {
-                observer.setIsFollower(true);
-            } else {
-                observer.setIsFollower(false);
-            }
-        } else if (msg.getData().containsKey(IsFollowerTask.MESSAGE_KEY)) {
-            String message = msg.getData().getString(IsFollowerTask.MESSAGE_KEY);
-            observer.displayError("Failed to determine following relationship: " + message);
-        } else if (msg.getData().containsKey(IsFollowerTask.EXCEPTION_KEY)) {
-            Exception ex = (Exception) msg.getData().getSerializable(IsFollowerTask.EXCEPTION_KEY);
-            observer.displayException(ex);
+    @Override
+    protected String getExceptionKey() {
+        return IsFollowerTask.EXCEPTION_KEY;
+    }
+
+    @Override
+    protected void handleError(String message) {
+        getObserver().displayError("Failed to determine following relationship: " + message);
+    }
+
+    @Override
+    protected String getMessageKey() {
+        return IsFollowerTask.MESSAGE_KEY;
+    }
+
+    @Override
+    protected void handleSuccess(Message msg) {
+        boolean isFollower = msg.getData().getBoolean(IsFollowerTask.IS_FOLLOWER_KEY);
+
+        // If logged in user if a follower of the selected user, display the follow button as "following"
+        if (isFollower) {
+            getObserver().setIsFollower(true);
+        } else {
+            getObserver().setIsFollower(false);
         }
+    }
+
+    @Override
+    protected String getSuccessKey() {
+        return IsFollowerTask.SUCCESS_KEY;
     }
 }
