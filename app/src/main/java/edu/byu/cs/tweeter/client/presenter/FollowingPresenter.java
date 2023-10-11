@@ -7,50 +7,27 @@ import edu.byu.cs.tweeter.client.model.service.FollowService;
 import edu.byu.cs.tweeter.client.model.service.UserService;
 import edu.byu.cs.tweeter.model.domain.User;
 
-public class FollowingPresenter extends Presenter {
-    private static final int PAGE_SIZE = 10;
-    private User lastItem;
-    private boolean hasMorePages;
-    private boolean isLoading;
+public class FollowingPresenter extends PagedPresenter<User> {
 
-    public interface View extends Presenter.MainView {
-        void setLoadingFooter(boolean setOrRemove);
-        void addMoreItems(List<User> items);
-        void startingNewActivity(User user);
-    }
+    public interface View extends PagedPresenter.PagedView<User> {}
 
-    private View view;
-
+    User user;
     private FollowService followService;
 
-    private UserService userService;
-
     public FollowingPresenter (View view) {
-        this.view = view;
+        super(view);
         followService = new FollowService();
-        userService = new UserService();
     }
 
-    public boolean hasMorePages() {
-        return hasMorePages;
-    }
-
-    public boolean isLoading() {
-        return isLoading;
+    @Override
+    protected void load() {
+        followService.loadMoreFollowing(Cache.getInstance().getCurrUserAuthToken(),
+                user, PAGE_SIZE, lastItems, new FollowServiceObserver());
     }
 
     public void loadMoreItems(User user) {
-        if (!isLoading) {   // This guard is important for avoiding a race condition in the scrolling code.
-            isLoading = true;
-            view.setLoadingFooter(true);
-
-            followService.loadMoreFollowing(Cache.getInstance().getCurrUserAuthToken(),
-                    user, PAGE_SIZE, lastItem, new FollowServiceObserver());
-        }
-    }
-
-    public void getUser(String aliasString) {
-        userService.getUser(Cache.getInstance().getCurrUserAuthToken(), aliasString, new UserServiceObserver());
+        this.user = user;
+        loadItems();
     }
 
     private class FollowServiceObserver implements FollowService.FollowObserver {
@@ -73,7 +50,7 @@ public class FollowingPresenter extends Presenter {
             isLoading = false;
             view.setLoadingFooter(false);
             FollowingPresenter.this.hasMorePages = hasMorePages;
-            lastItem = (followees.size() > 0) ? followees.get(followees.size() - 1) : null;
+            lastItems = (followees.size() > 0) ? followees.get(followees.size() - 1) : null;
             view.addMoreItems(followees);
         }
 
@@ -109,34 +86,6 @@ public class FollowingPresenter extends Presenter {
 
         @Override
         public void followingCount(int count) {
-
-        }
-    }
-
-    private class UserServiceObserver implements UserService.UserObserver {
-
-        @Override
-        public void displayGettingProfile(String message) {
-            view.displayMessage(message);
-        }
-
-        @Override
-        public void displayError(String message) {
-            view.displayMessage(message);
-        }
-
-        @Override
-        public void displayException(Exception ex) {
-            view.displayMessage("Failed to get user's profile because of exception: " + ex.getMessage());
-        }
-
-        @Override
-        public void startingNewActivity(User user) {
-            view.startingNewActivity(user);
-        }
-
-        @Override
-        public void logOutCancel() {
 
         }
     }
