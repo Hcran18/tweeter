@@ -4,56 +4,29 @@ import java.util.List;
 
 import edu.byu.cs.tweeter.client.cache.Cache;
 import edu.byu.cs.tweeter.client.model.service.StatusService;
-import edu.byu.cs.tweeter.client.model.service.UserService;
 import edu.byu.cs.tweeter.model.domain.Status;
 import edu.byu.cs.tweeter.model.domain.User;
 
-public class FeedPresenter extends Presenter {
-    private static final int PAGE_SIZE = 10;
-    private Status lastStatus;
-    private boolean hasMorePages;
-    private boolean isLoading;
+public class FeedPresenter extends PagedPresenter<Status> {
 
-    public interface MainView extends Presenter.MainView {
+    public interface View extends PagedPresenter.PagedView<Status> {}
 
-        void setLoadingFooter(boolean b);
-
-        void addMoreFollowers(List<Status> statuses);
-
-        void startingNewActivity(User user);
-    }
-
-    private MainView view;
-
+    User user;
     private StatusService statusService;
 
-    private UserService userService;
-
-    public FeedPresenter (MainView view){
-        this.view = view;
+    public FeedPresenter (View view){
+        super(view);
         statusService = new StatusService();
-        userService = new UserService();
-    }
-
-    public boolean hasMorePages() {
-        return hasMorePages;
-    }
-
-    public boolean isLoading() {
-        return isLoading;
     }
 
     public void loadMoreFeed(User user) {
-        if (!isLoading) {   // This guard is important for avoiding a race condition in the scrolling code.
-            isLoading = true;
-            view.setLoadingFooter(true);
-
-            statusService.loadMoreFeed(Cache.getInstance().getCurrUserAuthToken(), user, PAGE_SIZE, lastStatus, new StatusServiceObserver());
-        }
+        this.user = user;
+        loadItems();
     }
 
-    public void getUser(String givenString) {
-        userService.getUser(Cache.getInstance().getCurrUserAuthToken(), givenString, new UserServiceObserver());
+    @Override
+    protected void load() {
+        statusService.loadMoreFeed(Cache.getInstance().getCurrUserAuthToken(), user, PAGE_SIZE, lastItems, new FeedPresenter.StatusServiceObserver());
     }
 
     private class StatusServiceObserver implements StatusService.StatusObserver {
@@ -63,8 +36,8 @@ public class FeedPresenter extends Presenter {
             isLoading = false;
             view.setLoadingFooter(false);
             FeedPresenter.this.hasMorePages = hasMorePages;
-            lastStatus = (statuses.size() > 0) ? statuses.get(statuses.size() - 1) : null;
-            view.addMoreFollowers(statuses);
+            lastItems = (statuses.size() > 0) ? statuses.get(statuses.size() - 1) : null;
+            view.addMoreItems(statuses);
         }
 
         @Override
@@ -83,34 +56,6 @@ public class FeedPresenter extends Presenter {
 
         @Override
         public void postSuccess() {
-
-        }
-    }
-
-    private class UserServiceObserver implements UserService.UserObserver {
-
-        @Override
-        public void displayGettingProfile(String message) {
-            view.displayMessage(message);
-        }
-
-        @Override
-        public void displayError(String message) {
-            view.displayMessage(message);
-        }
-
-        @Override
-        public void displayException(Exception ex) {
-            view.displayMessage("Failed to get user's profile because of exception: " + ex.getMessage());
-        }
-
-        @Override
-        public void startingNewActivity(User user) {
-            view.startingNewActivity(user);
-        }
-
-        @Override
-        public void logOutCancel() {
 
         }
     }

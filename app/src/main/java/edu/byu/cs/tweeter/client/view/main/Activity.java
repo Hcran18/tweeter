@@ -33,7 +33,7 @@ import edu.byu.cs.tweeter.model.domain.User;
 /**
  * The main activity for the application. Contains tabs for feed, story, following, and followers.
  */
-public class MainActivity extends AppCompatActivity implements StatusDialogFragment.Observer, MainPresenter.MainView {
+public class Activity extends AppCompatActivity implements StatusDialogFragment.Observer, MainPresenter.View {
 
     private static final String LOG_TAG = "MainActivity";
 
@@ -173,7 +173,7 @@ public class MainActivity extends AppCompatActivity implements StatusDialogFragm
 
     @Override
     public void displayMessage(String message) {
-        Toast.makeText(MainActivity.this, message, Toast.LENGTH_LONG).show();
+        Toast.makeText(Activity.this, message, Toast.LENGTH_LONG).show();
     }
 
     @Override
@@ -221,6 +221,6 @@ public class MainActivity extends AppCompatActivity implements StatusDialogFragm
     @Override
     public void postSuccess() {
         postingToast.cancel();
-        Toast.makeText(MainActivity.this, "Successfully Posted!", Toast.LENGTH_LONG).show();
+        Toast.makeText(Activity.this, "Successfully Posted!", Toast.LENGTH_LONG).show();
     }
 }

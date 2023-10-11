@@ -15,7 +15,7 @@ import edu.byu.cs.tweeter.model.domain.User;
 
 public class MainPresenter extends Presenter {
 
-    public interface MainView extends Presenter.MainView {
+    public interface View extends Presenter.MainView {
 
         void setVisability(boolean visible);
 
@@ -34,7 +34,7 @@ public class MainPresenter extends Presenter {
         void postSuccess();
     }
 
-    private MainView view;
+    private View view;
 
     private FollowService followService;
 
@@ -42,7 +42,7 @@ public class MainPresenter extends Presenter {
 
     private StatusService statusService;
 
-    public MainPresenter (MainView view) {
+    public MainPresenter (View view) {
         this.view = view;
         followService = new FollowService();
         userService = new UserService();

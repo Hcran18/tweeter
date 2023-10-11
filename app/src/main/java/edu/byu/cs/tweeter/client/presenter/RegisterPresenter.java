@@ -7,9 +7,9 @@ import edu.byu.cs.tweeter.model.domain.User;
 
 public class RegisterPresenter extends SignInPresenter {
 
-    public interface MainView extends SignInPresenter.SignInView {}
+    public interface View extends SignInPresenter.SignInView {}
 
-    public RegisterPresenter(MainView view) {
+    public RegisterPresenter(View view) {
         super(view);
     }
 

@@ -22,7 +22,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="edu.byu.cs.tweeter.client.view.main.MainActivity"
+            android:name="edu.byu.cs.tweeter.client.view.main.Activity"
             android:label="@string/title_activity_main" />
     </application>
 

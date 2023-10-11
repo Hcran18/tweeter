@@ -1,6 +1,5 @@
 package edu.byu.cs.tweeter.client.view.login;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
@@ -23,13 +22,13 @@ import java.util.Base64;
 
 import edu.byu.cs.tweeter.R;
 import edu.byu.cs.tweeter.client.presenter.RegisterPresenter;
-import edu.byu.cs.tweeter.client.view.main.MainActivity;
+import edu.byu.cs.tweeter.client.view.main.Activity;
 import edu.byu.cs.tweeter.model.domain.User;
 
 /**
  * Implements the register screen.
  */
-public class RegisterFragment extends Fragment implements RegisterPresenter.MainView {
+public class RegisterFragment extends Fragment implements RegisterPresenter.View {
     private static final String LOG_TAG = "RegisterFragment";
     private static final int RESULT_IMAGE = 10;
 
@@ -103,7 +102,7 @@ public class RegisterFragment extends Fragment implements RegisterPresenter.Main
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if (requestCode == RESULT_IMAGE && resultCode == Activity.RESULT_OK && data != null) {
+        if (requestCode == RESULT_IMAGE && resultCode == android.app.Activity.RESULT_OK && data != null) {
             Uri selectedImage = data.getData();
             imageToUpload.setImageURI(selectedImage);
             imageUploaderButton.setText(R.string.afterUploadPicture);
@@ -140,8 +139,8 @@ public class RegisterFragment extends Fragment implements RegisterPresenter.Main
 
     @Override
     public void openMainView(User user) {
-        Intent intent = new Intent(getContext(), MainActivity.class);
-        intent.putExtra(MainActivity.CURRENT_USER_KEY, user);
+        Intent intent = new Intent(getContext(), Activity.class);
+        intent.putExtra(Activity.CURRENT_USER_KEY, user);
         startActivity(intent);
     }
 

@@ -32,7 +32,7 @@ import java.util.List;
 
 import edu.byu.cs.tweeter.R;
 import edu.byu.cs.tweeter.client.presenter.StoryPresenter;
-import edu.byu.cs.tweeter.client.view.main.MainActivity;
+import edu.byu.cs.tweeter.client.view.main.Activity;
 import edu.byu.cs.tweeter.model.domain.Status;
 import edu.byu.cs.tweeter.model.domain.User;
 import edu.byu.cs.tweeter.util.Timestamp;
@@ -40,7 +40,7 @@ import edu.byu.cs.tweeter.util.Timestamp;
 /**
  * Implements the "Story" tab.
  */
-public class StoryFragment extends Fragment implements StoryPresenter.MainView {
+public class StoryFragment extends Fragment implements StoryPresenter.View {
     private static final String LOG_TAG = "StoryFragment";
     private static final String USER_KEY = "UserKey";
     private static final int LOADING_DATA_VIEW = 0;
@@ -104,7 +104,7 @@ public class StoryFragment extends Fragment implements StoryPresenter.MainView {
     }
 
     @Override
-    public void addMoreStories(List<Status> statuses) {
+    public void addMoreItems(List<Status> statuses) {
         storyRecyclerViewAdapter.addItems(statuses);
     }
 
@@ -115,8 +115,8 @@ public class StoryFragment extends Fragment implements StoryPresenter.MainView {
 
     @Override
     public void startingNewActivity(User user) {
-        Intent intent = new Intent(getContext(), MainActivity.class);
-        intent.putExtra(MainActivity.CURRENT_USER_KEY, user);
+        Intent intent = new Intent(getContext(), Activity.class);
+        intent.putExtra(Activity.CURRENT_USER_KEY, user);
         startActivity(intent);
     }
 

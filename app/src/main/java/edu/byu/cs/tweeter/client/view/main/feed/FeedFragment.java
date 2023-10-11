@@ -32,7 +32,7 @@ import java.util.List;
 
 import edu.byu.cs.tweeter.R;
 import edu.byu.cs.tweeter.client.presenter.FeedPresenter;
-import edu.byu.cs.tweeter.client.view.main.MainActivity;
+import edu.byu.cs.tweeter.client.view.main.Activity;
 import edu.byu.cs.tweeter.model.domain.Status;
 import edu.byu.cs.tweeter.model.domain.User;
 import edu.byu.cs.tweeter.util.Timestamp;
@@ -40,7 +40,7 @@ import edu.byu.cs.tweeter.util.Timestamp;
 /**
  * Implements the "Feed" tab.
  */
-public class FeedFragment extends Fragment implements FeedPresenter.MainView {
+public class FeedFragment extends Fragment implements FeedPresenter.View {
     private static final String LOG_TAG = "FeedFragment";
     private static final String USER_KEY = "UserKey";
 
@@ -105,7 +105,7 @@ public class FeedFragment extends Fragment implements FeedPresenter.MainView {
     }
 
     @Override
-    public void addMoreFollowers(List<Status> statuses) {
+    public void addMoreItems(List<Status> statuses) {
         feedRecyclerViewAdapter.addItems(statuses);
     }
 
@@ -116,8 +116,8 @@ public class FeedFragment extends Fragment implements FeedPresenter.MainView {
 
     @Override
     public void startingNewActivity(User user) {
-        Intent intent = new Intent(getContext(), MainActivity.class);
-        intent.putExtra(MainActivity.CURRENT_USER_KEY, user);
+        Intent intent = new Intent(getContext(), Activity.class);
+        intent.putExtra(Activity.CURRENT_USER_KEY, user);
         startActivity(intent);
     }
 

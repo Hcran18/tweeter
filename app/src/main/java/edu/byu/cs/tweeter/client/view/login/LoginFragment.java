@@ -14,7 +14,7 @@ import androidx.fragment.app.Fragment;
 
 import edu.byu.cs.tweeter.R;
 import edu.byu.cs.tweeter.client.presenter.LoginPresenter;
-import edu.byu.cs.tweeter.client.view.main.MainActivity;
+import edu.byu.cs.tweeter.client.view.main.Activity;
 import edu.byu.cs.tweeter.model.domain.User;
 
 /**
@@ -92,8 +92,8 @@ public class LoginFragment extends Fragment implements LoginPresenter.View {
 
     @Override
     public void openMainView(User user) {
-        Intent intent = new Intent(getContext(), MainActivity.class);
-        intent.putExtra(MainActivity.CURRENT_USER_KEY, user);
+        Intent intent = new Intent(getContext(), Activity.class);
+        intent.putExtra(Activity.CURRENT_USER_KEY, user);
         startActivity(intent);
     }
 

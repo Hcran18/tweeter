@@ -9,29 +9,23 @@ import edu.byu.cs.tweeter.model.domain.User;
 
 public class FollowingPresenter extends Presenter {
     private static final int PAGE_SIZE = 10;
-
-    private User lastFollowee;
-
+    private User lastItem;
     private boolean hasMorePages;
-
     private boolean isLoading;
 
-    public interface MainView extends Presenter.MainView {
-
+    public interface View extends Presenter.MainView {
         void setLoadingFooter(boolean setOrRemove);
-
-        void addMoreFollowees(List<User> followees);
-
+        void addMoreItems(List<User> items);
         void startingNewActivity(User user);
     }
 
-    private MainView view;
+    private View view;
 
     private FollowService followService;
 
     private UserService userService;
 
-    public FollowingPresenter (MainView view) {
+    public FollowingPresenter (View view) {
         this.view = view;
         followService = new FollowService();
         userService = new UserService();
@@ -51,7 +45,7 @@ public class FollowingPresenter extends Presenter {
             view.setLoadingFooter(true);
 
             followService.loadMoreFollowing(Cache.getInstance().getCurrUserAuthToken(),
-                    user, PAGE_SIZE, lastFollowee, new FollowServiceObserver());
+                    user, PAGE_SIZE, lastItem, new FollowServiceObserver());
         }
     }
 
@@ -79,8 +73,8 @@ public class FollowingPresenter extends Presenter {
             isLoading = false;
             view.setLoadingFooter(false);
             FollowingPresenter.this.hasMorePages = hasMorePages;
-            lastFollowee = (followees.size() > 0) ? followees.get(followees.size() - 1) : null;
-            view.addMoreFollowees(followees);
+            lastItem = (followees.size() > 0) ? followees.get(followees.size() - 1) : null;
+            view.addMoreItems(followees);
         }
 
         @Override

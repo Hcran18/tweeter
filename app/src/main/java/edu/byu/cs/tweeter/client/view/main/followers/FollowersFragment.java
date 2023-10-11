@@ -28,13 +28,13 @@ import java.util.List;
 import edu.byu.cs.tweeter.R;
 import edu.byu.cs.tweeter.client.model.service.backgroundTask.GetUserTask;
 import edu.byu.cs.tweeter.client.presenter.FollowersPresenter;
-import edu.byu.cs.tweeter.client.view.main.MainActivity;
+import edu.byu.cs.tweeter.client.view.main.Activity;
 import edu.byu.cs.tweeter.model.domain.User;
 
 /**
  * Implements the "Followers" tab.
  */
-public class FollowersFragment extends Fragment implements FollowersPresenter.MainView {
+public class FollowersFragment extends Fragment implements FollowersPresenter.View {
 
     private static final String LOG_TAG = "FollowersFragment";
     private static final String USER_KEY = "UserKey";
@@ -100,7 +100,7 @@ public class FollowersFragment extends Fragment implements FollowersPresenter.Ma
     }
 
     @Override
-    public void addMoreFollowers(List<User> followers) {
+    public void addMoreItems(List<User> followers) {
         followersRecyclerViewAdapter.addItems(followers);
     }
 
@@ -111,8 +111,8 @@ public class FollowersFragment extends Fragment implements FollowersPresenter.Ma
 
     @Override
     public void startingNewActivity(User user) {
-        Intent intent = new Intent(getContext(), MainActivity.class);
-        intent.putExtra(MainActivity.CURRENT_USER_KEY, user);
+        Intent intent = new Intent(getContext(), Activity.class);
+        intent.putExtra(Activity.CURRENT_USER_KEY, user);
         startActivity(intent);
     }
 
@@ -175,8 +175,8 @@ public class FollowersFragment extends Fragment implements FollowersPresenter.Ma
                 if (success) {
                     User user = (User) msg.getData().getSerializable(GetUserTask.USER_KEY);
 
-                    Intent intent = new Intent(getContext(), MainActivity.class);
-                    intent.putExtra(MainActivity.CURRENT_USER_KEY, user);
+                    Intent intent = new Intent(getContext(), Activity.class);
+                    intent.putExtra(Activity.CURRENT_USER_KEY, user);
                     startActivity(intent);
                 } else if (msg.getData().containsKey(GetUserTask.MESSAGE_KEY)) {
                     String message = msg.getData().getString(GetUserTask.MESSAGE_KEY);

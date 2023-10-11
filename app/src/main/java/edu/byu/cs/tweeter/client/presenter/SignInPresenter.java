@@ -22,7 +22,7 @@ public abstract class SignInPresenter extends Presenter{
         this.view = view;
     }
 
-    public void performSignIn() {
+    protected void performSignIn() {
         if (validate()) {
             view.hideErrorMessage();
             view.displayMessage(getMessage());

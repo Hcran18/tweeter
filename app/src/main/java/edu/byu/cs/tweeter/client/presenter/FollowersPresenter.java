@@ -9,26 +9,23 @@ import edu.byu.cs.tweeter.model.domain.User;
 
 public class FollowersPresenter extends Presenter {
     private static final int PAGE_SIZE = 10;
-    private User lastFollower;
+    private User lastItem;
     private boolean hasMorePages;
     private boolean isLoading;
 
-    public interface MainView extends Presenter.MainView {
-
-        void setLoadingFooter(boolean b);
-
-        void addMoreFollowers(List<User> followers);
-
+    public interface View extends Presenter.MainView {
+        void setLoadingFooter(boolean setOrRemove);
+        void addMoreItems(List<User> items);
         void startingNewActivity(User user);
     }
 
-    private MainView view;
+    private View view;
 
     private FollowService followService;
 
     private UserService userService;
 
-    public FollowersPresenter(MainView view) {
+    public FollowersPresenter(View view) {
         this.view = view;
         followService = new FollowService();
         userService = new UserService();
@@ -48,7 +45,7 @@ public class FollowersPresenter extends Presenter {
             view.setLoadingFooter(true);
 
             followService.loadMoreFollowers(Cache.getInstance().getCurrUserAuthToken(),
-                    user, PAGE_SIZE, lastFollower, new FollowServiceObserver());
+                    user, PAGE_SIZE, lastItem, new FollowServiceObserver());
         }
     }
 
@@ -77,8 +74,8 @@ public class FollowersPresenter extends Presenter {
             view.setLoadingFooter(false);
 
             FollowersPresenter.this.hasMorePages = hasMorePages;
-            lastFollower = (followers.size() > 0) ? followers.get(followers.size() - 1) : null;
-            view.addMoreFollowers(followers);
+            lastItem = (followers.size() > 0) ? followers.get(followers.size() - 1) : null;
+            view.addMoreItems(followers);
         }
 
         @Override
