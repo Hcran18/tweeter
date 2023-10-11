@@ -14,7 +14,7 @@ public class StoryPresenter extends StatusPresenter {
 
     @Override
     protected void doLoad(StatusService statusService, StatusPresenter.StatusServiceObserver statusServiceObserver) {
-        statusService.loadMoreStory(Cache.getInstance().getCurrUserAuthToken(), user, PAGE_SIZE, lastItems, new StatusServiceObserver());
+        statusService.loadMoreStory(Cache.getInstance().getCurrUserAuthToken(), user, PAGE_SIZE, lastItems, statusServiceObserver);
     }
 
     @Override

@@ -14,7 +14,7 @@ public class FeedPresenter extends StatusPresenter {
 
     @Override
     protected void doLoad(StatusService statusService, StatusPresenter.StatusServiceObserver statusServiceObserver) {
-        statusService.loadMoreFeed(Cache.getInstance().getCurrUserAuthToken(), user, PAGE_SIZE, lastItems, new FeedPresenter.StatusServiceObserver());
+        statusService.loadMoreFeed(Cache.getInstance().getCurrUserAuthToken(), user, PAGE_SIZE, lastItems, statusServiceObserver);
     }
 
     @Override
