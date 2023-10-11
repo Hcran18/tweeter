@@ -1,48 +1,46 @@
 package edu.byu.cs.tweeter.client.presenter;
 
-import android.graphics.Bitmap;
-import android.graphics.drawable.BitmapDrawable;
 import android.widget.ImageView;
 
-import java.io.ByteArrayOutputStream;
-import java.util.Base64;
-
-import edu.byu.cs.tweeter.client.cache.Cache;
 import edu.byu.cs.tweeter.client.model.service.UserService;
 import edu.byu.cs.tweeter.model.domain.User;
 
-public class RegisterPresenter {
+public class RegisterPresenter extends SignInPresenter {
 
-    public interface View {
+    public interface MainView extends SignInPresenter.SignInView {}
 
-        void displayErrorMessage(String message);
-
-        void hideErrorMessage();
-
-        void displayInfoMessage(String message);
-
-        void hideInfoMessage();
-
-        void openMainView(User user);
+    public RegisterPresenter(MainView view) {
+        super(view);
     }
-    
-    private View view;
-    
-    public RegisterPresenter(View view) {
-        this.view = view;
-    }
+
+    String firstName;
+    String lastName;
+    ImageView imageToUpload;
+    String imageBytesBase64;
 
     public void register(String firstName, String lastName, String alias, String password, ImageView imageToUpload, String imageBytesBase64) {
-        if (validateRegistration(firstName, lastName, alias, password, imageToUpload)) {
-            view.hideErrorMessage();
-            view.displayInfoMessage("Registering...");
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.alias = alias;
+        this.password = password;
+        this.imageToUpload = imageToUpload;
+        this.imageBytesBase64 = imageBytesBase64;
 
-            UserService userService = new UserService();
-            userService.register(firstName, lastName, alias, password, imageBytesBase64, new UserServiceObserver());
-        }
+        performSignIn();
     }
 
-    public boolean validateRegistration(String firstName, String lastName, String alias, String password, ImageView imageToUpload) {
+    @Override
+    protected void signIn(UserService userService) {
+        userService.register(firstName, lastName, alias, password, imageBytesBase64, new UserServiceObserver());
+    }
+
+    @Override
+    protected String getMessage() {
+        return "Registering...";
+    }
+
+    @Override
+    protected boolean validate() {
         if (firstName.length() == 0) {
             view.displayErrorMessage("First Name cannot be empty.");
             return false;
@@ -72,7 +70,7 @@ public class RegisterPresenter {
             view.displayErrorMessage("Profile image must be uploaded.");
             return false;
         }
-        
+
         return true;
     }
     
@@ -80,15 +78,12 @@ public class RegisterPresenter {
 
         @Override
         public void registerSucceeded(User user) {
-            view.hideErrorMessage();
-            view.hideInfoMessage();
-            view.displayInfoMessage("Hello " + Cache.getInstance().getCurrUser().getName());
-            view.openMainView(user);
+            actionSucceeded(user);
         }
 
         @Override
         public void registerFailed(String message) {
-            view.displayErrorMessage(message);
+            actionFailed(message);
         }
     }
 }

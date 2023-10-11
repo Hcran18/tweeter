@@ -8,30 +8,25 @@ import edu.byu.cs.tweeter.client.model.service.UserService;
 import edu.byu.cs.tweeter.model.domain.Status;
 import edu.byu.cs.tweeter.model.domain.User;
 
-public class StoryPresenter {
+public class StoryPresenter extends Presenter {
     private static final int PAGE_SIZE = 10;
     private Status lastStatus;
     private boolean hasMorePages;
     private boolean isLoading;
 
-    public interface View {
-
+    public interface MainView extends Presenter.MainView {
         void setLoadingFooter(boolean setOrRemove);
-
         void addMoreStories(List<Status> statuses);
-
-        void displayMessage(String message);
-
         void startingNewActivity(User user);
     }
 
-    private View view;
+    private MainView view;
 
     private StatusService statusService;
 
     private UserService userService;
 
-    public StoryPresenter (View view) {
+    public StoryPresenter (MainView view) {
         this.view = view;
         statusService = new StatusService();
         userService = new UserService();

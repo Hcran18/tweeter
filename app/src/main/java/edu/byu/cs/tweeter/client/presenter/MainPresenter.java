@@ -13,13 +13,11 @@ import edu.byu.cs.tweeter.client.model.service.UserService;
 import edu.byu.cs.tweeter.model.domain.Status;
 import edu.byu.cs.tweeter.model.domain.User;
 
-public class MainPresenter {
+public class MainPresenter extends Presenter {
 
-    public interface View {
+    public interface MainView extends Presenter.MainView {
 
         void setVisability(boolean visible);
-
-        void displayMessage(String message);
 
         void setIsFollower(boolean isFollower);
 
@@ -36,7 +34,7 @@ public class MainPresenter {
         void postSuccess();
     }
 
-    private View view;
+    private MainView view;
 
     private FollowService followService;
 
@@ -44,7 +42,7 @@ public class MainPresenter {
 
     private StatusService statusService;
 
-    public MainPresenter (View view) {
+    public MainPresenter (MainView view) {
         this.view = view;
         followService = new FollowService();
         userService = new UserService();

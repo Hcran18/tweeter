@@ -29,7 +29,7 @@ import edu.byu.cs.tweeter.model.domain.User;
 /**
  * Implements the register screen.
  */
-public class RegisterFragment extends Fragment implements RegisterPresenter.View {
+public class RegisterFragment extends Fragment implements RegisterPresenter.MainView {
     private static final String LOG_TAG = "RegisterFragment";
     private static final int RESULT_IMAGE = 10;
 
@@ -125,7 +125,7 @@ public class RegisterFragment extends Fragment implements RegisterPresenter.View
     }
 
     @Override
-    public void displayInfoMessage(String message) {
+    public void displayMessage(String message) {
         registeringToast = Toast.makeText(getContext(), message, Toast.LENGTH_LONG);
         registeringToast.show();
     }

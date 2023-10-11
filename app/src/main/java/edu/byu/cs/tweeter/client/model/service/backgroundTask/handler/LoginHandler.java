@@ -49,7 +49,7 @@ public class LoginHandler extends MainHandler<UserService.LoginObserver> {
         Cache.getInstance().setCurrUser(loggedInUser);
         Cache.getInstance().setCurrUserAuthToken(authToken);
 
-        getObserver().loginSucceeded(authToken, loggedInUser);
+        getObserver().loginSucceeded(loggedInUser);
     }
 
     @Override

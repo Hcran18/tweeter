@@ -30,7 +30,7 @@ public class UserService extends Service {
     }
 
     public interface LoginObserver {
-        void loginSucceeded(AuthToken authToken, User user);
+        void loginSucceeded(User user);
         void loginFailed(String message);
     }
 

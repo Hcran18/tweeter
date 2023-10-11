@@ -1,36 +1,35 @@
 package edu.byu.cs.tweeter.client.presenter;
 
 import edu.byu.cs.tweeter.client.model.service.UserService;
-import edu.byu.cs.tweeter.model.domain.AuthToken;
 import edu.byu.cs.tweeter.model.domain.User;
 
-public class LoginPresenter {
+public class LoginPresenter extends SignInPresenter {
 
-    public interface View {
-        void displayInfoMessage(String message);
-        void hideInfoMessage();
-        void displayErrorMessage(String message);
-        void hideErrorMessage();
-        void openMainView(User user);
-    }
-
-    private  View view;
+    public interface View extends SignInPresenter.SignInView {}
 
     public LoginPresenter(View view) {
-        this.view = view;
+        super(view);
     }
 
     public void login(String alias, String password) {
-        if (validateLogin(alias, password)) {
-            view.hideErrorMessage();
-            view.displayInfoMessage("Logging In...");
+        this.alias = alias;
+        this.password = password;
 
-            UserService userService = new UserService();
-            userService.login(alias, password, new UserServiceObserver());
-        }
+        performSignIn();
     }
 
-    public boolean validateLogin(String alias, String password) {
+    @Override
+    protected void signIn(UserService userService) {
+        userService.login(alias, password, new LoginPresenter.UserServiceObserver());
+    }
+
+    @Override
+    protected String getMessage() {
+        return "Logging In...";
+    }
+
+    @Override
+    protected boolean validate() {
         if (alias.length() > 0 && alias.charAt(0) != '@') {
             view.displayErrorMessage("Alias must begin with @.");
             return false;
@@ -50,16 +49,13 @@ public class LoginPresenter {
     private class UserServiceObserver implements UserService.LoginObserver {
 
         @Override
-        public void loginSucceeded(AuthToken authToken, User user) {
-            view.hideErrorMessage();
-            view.hideInfoMessage();
-            view.displayInfoMessage("Hello, " + user.getName());
-            view.openMainView(user);
+        public void loginSucceeded(User user) {
+            actionSucceeded(user);
         }
 
         @Override
         public void loginFailed(String message) {
-            view.displayErrorMessage(message);
+            actionFailed(message);
         }
     }
 }

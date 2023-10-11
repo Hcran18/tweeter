@@ -7,7 +7,7 @@ import edu.byu.cs.tweeter.client.model.service.FollowService;
 import edu.byu.cs.tweeter.client.model.service.UserService;
 import edu.byu.cs.tweeter.model.domain.User;
 
-public class FollowingPresenter {
+public class FollowingPresenter extends Presenter {
     private static final int PAGE_SIZE = 10;
 
     private User lastFollowee;
@@ -16,24 +16,22 @@ public class FollowingPresenter {
 
     private boolean isLoading;
 
-    public interface View {
+    public interface MainView extends Presenter.MainView {
 
         void setLoadingFooter(boolean setOrRemove);
-
-        void displayMessage(String message);
 
         void addMoreFollowees(List<User> followees);
 
         void startingNewActivity(User user);
     }
 
-    private View view;
+    private MainView view;
 
     private FollowService followService;
 
     private UserService userService;
 
-    public FollowingPresenter (View view) {
+    public FollowingPresenter (MainView view) {
         this.view = view;
         followService = new FollowService();
         userService = new UserService();
