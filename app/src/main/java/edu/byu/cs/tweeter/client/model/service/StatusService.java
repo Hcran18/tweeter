@@ -16,13 +16,9 @@ import edu.byu.cs.tweeter.model.domain.User;
 
 public class StatusService extends Service {
 
-    public interface StatusObserver {
+    public interface StatusObserver extends Service.ServiceObserver {
 
         void addMoreStatuses(List<Status> statuses, boolean hasMorePages);
-
-        void displayError(String message);
-
-        void displayException(Exception ex);
 
         void postSuccess();
     }

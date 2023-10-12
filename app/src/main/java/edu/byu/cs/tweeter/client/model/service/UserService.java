@@ -16,13 +16,9 @@ import edu.byu.cs.tweeter.model.domain.User;
 
 public class UserService extends Service {
 
-    public interface UserObserver {
+    public interface UserObserver extends Service.ServiceObserver {
 
         void displayGettingProfile(String message);
-
-        void displayError(String message);
-
-        void displayException(Exception ex);
 
         void startingNewActivity(User user);
 
