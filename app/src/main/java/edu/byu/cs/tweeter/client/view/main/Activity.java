@@ -219,8 +219,10 @@ public class Activity extends AppCompatActivity implements StatusDialogFragment.
     }
 
     @Override
-    public void postSuccess() {
-        postingToast.cancel();
-        Toast.makeText(Activity.this, "Successfully Posted!", Toast.LENGTH_LONG).show();
+    public void postSuccess(String msg) {
+        if (postingToast != null) {
+            postingToast.cancel();
+        }
+        Toast.makeText(Activity.this, msg, Toast.LENGTH_LONG).show();
     }
 }

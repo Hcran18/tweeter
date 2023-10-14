@@ -31,7 +31,7 @@ public class MainPresenter extends Presenter {
 
         void logOutCancel();
 
-        void postSuccess();
+        void postSuccess(String message);
     }
 
     private View view;
@@ -46,7 +46,13 @@ public class MainPresenter extends Presenter {
         this.view = view;
         followService = new FollowService();
         userService = new UserService();
-        statusService = new StatusService();
+   }
+
+    protected StatusService getStatusService() {
+        if (statusService == null) {
+            statusService = new StatusService();
+        }
+        return statusService;
     }
 
     public void isFollower(User selectedUser) {
@@ -83,7 +89,7 @@ public class MainPresenter extends Presenter {
         view.displayMessage("Posting Status...");
 
         Status newStatus = new Status(post, Cache.getInstance().getCurrUser(), System.currentTimeMillis(), parseURLs(post), parseMentions(post));
-        statusService.post(newStatus, Cache.getInstance().getCurrUserAuthToken(), new StatusServiceObserver());
+        getStatusService().post(newStatus, Cache.getInstance().getCurrUserAuthToken(), new StatusServiceObserver());
     }
 
     public List<String> parseURLs(String post) {
@@ -238,12 +244,12 @@ public class MainPresenter extends Presenter {
 
         @Override
         public void displayException(Exception ex) {
-
+            view.displayMessage(ex.getMessage());
         }
 
         @Override
-        public void postSuccess() {
-            view.postSuccess();
+        public void postSuccess(String msg) {
+            view.postSuccess(msg);
         }
     }
 }

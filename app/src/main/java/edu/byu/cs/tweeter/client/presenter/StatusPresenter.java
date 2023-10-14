@@ -53,7 +53,7 @@ public abstract class StatusPresenter extends PagedPresenter<Status>{
         }
 
         @Override
-        public void postSuccess() {
+        public void postSuccess(String s) {
 
         }
     }

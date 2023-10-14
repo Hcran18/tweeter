@@ -37,7 +37,7 @@ public class PostStatusHandler extends MainHandler<StatusService.StatusObserver>
 
     @Override
     protected void handleSuccess(Message msg) {
-        getObserver().postSuccess();
+        getObserver().postSuccess("Successfully Posted!");
     }
 
     @Override
